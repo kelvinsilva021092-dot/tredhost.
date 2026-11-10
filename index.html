@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TredHost</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#09070f;color:#fff;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:25px 8%;border-bottom:1px solid #30213f;
+ display:flex;justify-content:space-between;
+}
+.logo{font-size:25px;font-weight:bold;letter-spacing:3px}
+.logo span,h1 span{color:#a45cff}
+nav a{color:#ddd;text-decoration:none;margin-left:20px}
+main{max-width:1050px;margin:auto;padding:75px 25px}
+.hero{padding:65px 0}
+.tag{color:#b77aff;letter-spacing:4px;font-size:12px}
+h1{font-size:clamp(42px,7vw,75px);max-width:750px;line-height:1.05}
+p{color:#aaa0b8;line-height:1.7}
+.btn{
+ display:inline-block;background:#873fe0;color:white;
+ padding:15px 25px;border-radius:8px;
+ text-decoration:none;font-weight:bold;margin-top:15px;
+}
+h2{margin-top:65px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+ background:#17111f;border:1px solid #392448;
+ padding:25px;border-radius:12px;
+}
+.card p{font-size:14px}
+.price{font-size:42px;font-weight:bold}
+footer{text-align:center;padding:35px;color:#756b80}
+@media(max-width:650px){
+ .cards{grid-template-columns:1fr}
+ header{flex-direction:column;gap:15px}
+ nav a{margin:0 15px 0 0}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">TRED<span>HOST</span></div>
+ <nav>
+  <a href="#conteudos">Conteúdos</a>
+  <a href="#assinatura">Assinatura</a>
+ </nav>
+</header>
+<main>
+ <section class="hero">
+  <div class="tag">ENTRE EM OUTRA DIMENSÃO</div>
+  <h1>O Minecraft além do <span>que você conhece.</span></h1>
+  <p>Entre para o TredHost e tenha acesso a vídeos exclusivos, bastidores dos projetos e conteúdos especiais.</p>
+  <a class="btn" href="#assinatura">Conhecer a assinatura</a>
+ </section>
+ <section id="conteudos">
+  <h2>Conteúdo exclusivo</h2>
+  <div class="cards">
+   <div class="card">
+    <h3>Vídeos exclusivos</h3>
+    <p>Conteúdos especiais de Minecraft para membros.</p>
+   </div>
+   <div class="card">
+    <h3>Bastidores</h3>
+    <p>Veja como os projetos são planejados e realizados.</p>
+   </div>
+   <div class="card">
+    <h3>Conteúdos especiais</h3>
+    <p>Novidades e materiais exclusivos da comunidade.</p>
+   </div>
+  </div>
+ </section>
+ <section id="assinatura">
+  <h2>Faça parte do TredHost</h2>
+  <div class="card">
+   <div class="price">R$ 14,90 <small>/mês</small></div>
+   <p>Tenha acesso à área exclusiva de membros.</p>
+   <a class="btn" href="mailto:contato@tredhost.com">Quero ser membro</a>
+  </div>
+ </section>
+</main>
+<footer>© 2026 TredHost</footer>
+</body>
+</html>
