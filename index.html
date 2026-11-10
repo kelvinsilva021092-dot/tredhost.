@@ -99,7 +99,7 @@ main {
   justify-content:space-between;
   gap:25px;
   padding:40px 5%;
-  min-height:420px;
+  min-height:480px;
   border:1px solid #38234d;
   border-radius:22px;
   background:linear-gradient(120deg,#1b1029,#0e0a17);
@@ -122,6 +122,7 @@ main {
   position:relative;
   z-index:1;
   max-width:620px;
+  flex:1;
 }
 
 .tag {
@@ -157,8 +158,8 @@ main {
 .mascot {
   position:relative;
   z-index:1;
-  flex:0 0 360px;
-  height:390px;
+  flex:0 0 440px;
+  height:480px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -167,11 +168,11 @@ main {
 
 .mascot-glow {
   position:absolute;
-  width:230px;
-  height:230px;
+  width:310px;
+  height:310px;
   border-radius:50%;
-  background:rgba(168,85,247,.22);
-  filter:blur(60px);
+  background:rgba(168,85,247,.25);
+  filter:blur(75px);
   z-index:0;
   animation:glow 4s ease-in-out infinite alternate;
 }
@@ -183,8 +184,8 @@ main {
 
 .mascot-scene {
   position:relative;
-  width:360px;
-  height:390px;
+  width:440px;
+  height:480px;
   display:flex;
   justify-content:center;
   align-items:flex-end;
@@ -195,21 +196,21 @@ main {
 .skin-canvas {
   position:absolute;
   z-index:3;
-  width:330px;
-  height:380px;
+  width:420px;
+  height:460px;
   bottom:0;
-  left:15px;
+  left:10px;
   display:block;
-  filter:drop-shadow(0 12px 22px rgba(168,85,247,.30));
+  filter:drop-shadow(0 15px 28px rgba(168,85,247,.4));
 }
 
 .wood-log {
   position:absolute;
   z-index:1;
-  width:190px;
-  height:37px;
-  bottom:45px;
-  left:85px;
+  width:230px;
+  height:43px;
+  bottom:48px;
+  left:105px;
   border-radius:9px;
   background:
     repeating-linear-gradient(
@@ -227,8 +228,8 @@ main {
   content:"";
   position:absolute;
   top:4px;
-  width:25px;
-  height:23px;
+  width:28px;
+  height:27px;
   border:3px solid #bd8654;
   border-radius:50%;
   background:#704329;
@@ -241,10 +242,10 @@ main {
   position:absolute;
   z-index:4;
   left:-30px;
-  top:105px;
+  top:115px;
   width:24px;
   height:20px;
-  animation:butterflyFlight 9s ease-in-out infinite;
+  animation:butterflyFlight 10s ease-in-out infinite;
   pointer-events:none;
 }
 
@@ -286,11 +287,12 @@ main {
 }
 
 @keyframes butterflyFlight {
-  0% { left:-10%; top:105px; }
-  25% { left:25%; top:75px; }
-  50% { left:55%; top:115px; }
-  75% { left:80%; top:65px; }
-  100% { left:115%; top:100px; }
+  0% { left:-10%; top:110px; }
+  20% { left:20%; top:75px; }
+  40% { left:42%; top:135px; }
+  65% { left:68%; top:65px; }
+  80% { left:85%; top:115px; }
+  100% { left:115%; top:90px; }
 }
 
 @keyframes wingLeft {
@@ -333,7 +335,7 @@ main {
 @keyframes particleRise {
   0% { transform:translateY(0) scale(.5); opacity:0; }
   20% { opacity:.9; }
-  100% { transform:translateY(-300px) scale(1.4); opacity:0; }
+  100% { transform:translateY(-350px) scale(1.4); opacity:0; }
 }
 
 /* RESTANTE DO SITE */
@@ -501,6 +503,23 @@ footer {
   font-size:12px;
 }
 
+@media(max-width:850px) {
+  .hero {
+    gap:0;
+    padding-left:4%;
+    padding-right:4%;
+  }
+
+  .mascot {
+    flex:0 0 380px;
+  }
+
+  .mascot-scene {
+    transform:scale(.88);
+    transform-origin:center center;
+  }
+}
+
 @media(max-width:700px) {
   header { padding:18px 5%; }
   main { padding:25px 14px 50px; }
@@ -508,7 +527,7 @@ footer {
   .hero {
     flex-direction:column;
     text-align:center;
-    padding:32px 20px 15px;
+    padding:32px 15px 10px;
     gap:10px;
   }
 
@@ -523,14 +542,18 @@ footer {
     letter-spacing:-1px;
   }
 
+  .hero p {
+    font-size:14px;
+  }
+
   .mascot {
     flex:auto;
-    height:330px;
+    height:410px;
     width:100%;
   }
 
   .mascot-scene {
-    transform:scale(.88);
+    transform:scale(.92);
     transform-origin:bottom center;
   }
 
@@ -861,7 +884,8 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- PERSONAGEM 3D E INTERAÇÃO COM A ROLAGEM -->
+<!-- PERSONAGEM 3D COM ANIMAÇÃO PROCEDURAL -->
+
 <script type="module">
 import * as skinview3d from
   "https://cdn.jsdelivr.net/npm/skinview3d@3.4.2/+esm";
@@ -871,6 +895,17 @@ const SKIN_URL =
 
 const viewers = [];
 
+const clamp = (v,min,max) =>
+  Math.max(min,Math.min(max,v));
+
+const lerp = (a,b,t) =>
+  a+(b-a)*t;
+
+const smooth = (a,b,v) => {
+  const x = clamp((v-a)/(b-a),0,1);
+  return x*x*(3-2*x);
+};
+
 async function createSkinViewer(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
@@ -878,18 +913,18 @@ async function createSkinViewer(canvasId) {
   try {
     const viewer = new skinview3d.SkinViewer({
       canvas,
-      width:330,
-      height:380,
+      width:420,
+      height:460,
       skin:SKIN_URL,
       background:null,
-      fov:35,
-      zoom:0.85
+      fov:32,
+      zoom:1.05
     });
 
     viewers.push(viewer);
 
     viewer.globalLight.intensity = 2.8;
-    viewer.cameraLight.intensity = 0.7;
+    viewer.cameraLight.intensity = 0.8;
 
     viewer.autoRotate = false;
     viewer.controls.enableRotate = false;
@@ -901,31 +936,40 @@ async function createSkinViewer(canvasId) {
     const player = viewer.playerObject;
     const skin = player.skin;
 
+    player.scale.set(1.12,1.12,1.12);
+
     let scrollTarget = 0;
     let scrollProgress = 0;
 
-    // A rolagem controla a transformação do personagem.
     function updateScroll() {
-      const maxScroll = 300;
+      const availableScroll =
+        Math.max(
+          280,
+          document.documentElement.scrollHeight -
+          window.innerHeight
+        );
 
-      scrollTarget = Math.max(
+      scrollTarget = clamp(
+        window.scrollY / Math.min(availableScroll,480),
         0,
-        Math.min(1, window.scrollY / maxScroll)
+        1
       );
     }
 
-    window.addEventListener("scroll", updateScroll, {
-      passive:true
-    });
+    window.addEventListener(
+      "scroll",
+      updateScroll,
+      {passive:true}
+    );
 
     updateScroll();
 
-    function sitPose() {
+    function initialPose() {
       skin.head.rotation.set(0,0,0);
       skin.body.rotation.set(0,0,0);
 
-      skin.rightArm.rotation.set(-0.15,0,-0.08);
-      skin.leftArm.rotation.set(-0.15,0,0.08);
+      skin.rightArm.rotation.set(-0.12,0,-0.08);
+      skin.leftArm.rotation.set(-0.12,0,0.08);
 
       skin.rightLeg.position.x = -2.5;
       skin.leftLeg.position.x = 2.5;
@@ -936,104 +980,223 @@ async function createSkinViewer(canvasId) {
       player.position.set(0,0,0);
     }
 
-    sitPose();
+    initialPose();
 
-    let greeting = false;
-    let greetingStart = 0;
-    let lastGreeting = performance.now();
+    // Ações espontâneas.
+    let action = null;
+    let actionStart = 0;
+    let nextAction = performance.now()+2500;
+
+    const actions = [
+      {name:"lookLeft",duration:2.4},
+      {name:"lookRight",duration:2.8},
+      {name:"wave",duration:2.7},
+      {name:"scratch",duration:2.5},
+      {name:"stretch",duration:3.1},
+      {name:"butterfly",duration:3.4}
+    ];
+
+    function chooseAction(time) {
+      const selected =
+        actions[Math.floor(Math.random()*actions.length)];
+
+      action = selected;
+      actionStart = time;
+      nextAction = time + 4500 + Math.random()*4500;
+    }
+
+    let previousTime = performance.now();
 
     function animate(time) {
       if (!canvas.isConnected) {
         viewer.dispose();
-        window.removeEventListener("scroll", updateScroll);
+        window.removeEventListener("scroll",updateScroll);
         return;
       }
 
-      const t = time / 1000;
+      const delta = Math.min(
+        (time-previousTime)/1000,
+        0.05
+      );
 
-      // Suaviza a transição para não acompanhar a roda de forma brusca.
+      previousTime = time;
+
+      const t = time/1000;
+
+      // Movimento suave da rolagem.
       scrollProgress +=
-        (scrollTarget - scrollProgress) * 0.075;
+        (scrollTarget-scrollProgress) *
+        (1-Math.pow(0.0005,delta));
 
       const p = scrollProgress;
 
-      // 0 = sentado | 1 = em pé
-      const legAngle = -1.05 * (1-p);
+      const standing = smooth(0.08,0.48,p);
+      const walking = smooth(0.58,0.88,p);
+      const idle = 1-walking;
 
-      skin.rightLeg.position.x = -2.5 + 0.5*p;
-      skin.leftLeg.position.x = 2.5 - 0.5*p;
+      // Respiração.
+      const breathing = Math.sin(t*2.1);
+      const bodyBreathing = breathing*0.025;
+
+      const bodySway = Math.sin(t*0.75)*0.045;
+      const headSway = Math.sin(t*0.9)*0.07;
+      const headNod = Math.sin(t*1.6)*0.025;
+
+      // Pernas.
+      const sittingAngle = -1.05*(1-standing);
+      const walkingCycle = t*7.5;
+      const step = Math.sin(walkingCycle)*0.48*walking;
+
+      skin.rightLeg.position.x = lerp(-2.5,-2,p);
+      skin.leftLeg.position.x = lerp(2.5,2,p);
 
       skin.rightLeg.rotation.set(
-        legAngle,
+        sittingAngle+step,
         0,
-        -0.22 * (1-p)
+        -0.22*(1-standing)
       );
 
       skin.leftLeg.rotation.set(
-        legAngle,
+        sittingAngle-step,
         0,
-        0.22 * (1-p)
+        0.22*(1-standing)
       );
 
-      // O personagem muda de posição conforme a página desce.
-      player.position.x = 2.2 * p;
-      player.position.y = 1.1 * p;
+      // Corpo acompanha os passos.
+      const walkBounce =
+        Math.abs(Math.sin(walkingCycle))*0.055*walking;
 
-      // Inclina o corpo gradualmente ao se levantar.
+      player.position.y =
+        Math.sin(t*2.1)*0.035*idle +
+        walkBounce;
+
+      player.position.x =
+        Math.sin(t*0.55)*0.07 +
+        walking*0.9;
+
       skin.body.rotation.x =
-        Math.sin(t * 1.2) * 0.025 + 0.035*p;
+        bodyBreathing +
+        Math.sin(walkingCycle)*0.055*walking;
 
-      skin.body.rotation.z = -0.08*p;
+      skin.body.rotation.z =
+        bodySway*idle +
+        Math.sin(walkingCycle)*0.035*walking;
 
-      // Olhar acompanha a borboleta e reage à rolagem.
-      skin.head.rotation.y =
-        Math.sin(t * (Math.PI * 2 / 9)) * 0.22
-        - 0.16*p;
+      skin.body.rotation.y =
+        Math.sin(t*0.7)*0.025;
 
-      skin.head.rotation.x =
-        Math.sin(t * 1.4) * 0.035
-        - 0.06*p;
+      // Cabeça.
+      let headY =
+        Math.sin(t*0.55)*0.12 +
+        headSway;
 
-      // Braços ficam relaxados sentado e se movimentam em pé.
-      skin.rightArm.rotation.x =
-        -0.15 + Math.sin(t*4)*0.12*p;
+      let headX =
+        headNod +
+        Math.sin(t*0.8)*0.025;
 
-      skin.leftArm.rotation.x =
-        -0.15 - Math.sin(t*4)*0.12*p;
+      let headZ =
+        Math.sin(t*0.65)*0.035;
 
-      skin.rightArm.rotation.z =
-        -0.08 + 0.025*Math.sin(t*1.1)
-        - 0.12*p;
+      // Braços.
+      let rightX =
+        -0.12 +
+        Math.sin(walkingCycle)*0.42*walking;
 
-      skin.leftArm.rotation.z =
-        0.08 - 0.025*Math.sin(t*1.1)
-        + 0.12*p;
+      let leftX =
+        -0.12 -
+        Math.sin(walkingCycle)*0.42*walking;
 
-      // Cumprimento periódico quando está no topo da página.
-      if (p < 0.04) {
-        if (!greeting && time-lastGreeting >= 20000) {
-          greeting = true;
-          greetingStart = time;
-        }
-      } else {
-        greeting = false;
-        lastGreeting = time;
+      let rightZ = -0.08;
+      let leftZ = 0.08;
+
+      // Escolhe gestos em intervalos variados.
+      if (!action && time>=nextAction && p<0.65) {
+        chooseAction(time);
       }
 
-      if (greeting && p < 0.04) {
-        const elapsed = (time-greetingStart)/1000;
+      let actionStrength = 0;
 
-        if (elapsed < 2.2) {
-          const wave = Math.sin(elapsed*9);
+      if (action) {
+        const elapsed = (time-actionStart)/1000;
 
-          skin.rightArm.rotation.x = -2.7;
-          skin.rightArm.rotation.z = -0.25 + wave*0.55;
-          skin.head.rotation.y = 0;
-        } else {
-          greeting = false;
-          lastGreeting = time;
+        const progress =
+          clamp(elapsed/action.duration,0,1);
+
+        actionStrength = Math.sin(progress*Math.PI);
+
+        if (progress>=1) {
+          action = null;
+          nextAction =
+            time+3000+Math.random()*5000;
         }
       }
+
+      if (action && actionStrength>0) {
+        const a = actionStrength;
+
+        if (action.name==="lookLeft") {
+          headY += -0.65*a;
+          headZ += 0.10*a;
+        }
+
+        if (action.name==="lookRight") {
+          headY += 0.65*a;
+          headZ -= 0.10*a;
+        }
+
+        if (action.name==="butterfly") {
+          headY += Math.sin(t*2.8)*0.5*a;
+          headX -= 0.20*a;
+        }
+
+        if (action.name==="wave") {
+          rightX = lerp(rightX,-2.5,a);
+          rightZ =
+            lerp(rightZ,-0.35+Math.sin(t*10)*0.5,a);
+
+          headY += 0.12*a;
+        }
+
+        if (action.name==="scratch") {
+          rightX = lerp(rightX,-1.8,a);
+          rightZ = lerp(rightZ,-0.85,a);
+          headZ += 0.18*a;
+          headX += 0.12*a;
+        }
+
+        if (action.name==="stretch") {
+          rightX = lerp(rightX,-1.15,a);
+          leftX = lerp(leftX,-1.15,a);
+
+          rightZ = lerp(rightZ,-0.45,a);
+          leftZ = lerp(leftZ,0.45,a);
+
+          skin.body.rotation.x -= 0.12*a;
+          headX -= 0.08*a;
+        }
+      }
+
+      skin.head.rotation.set(
+        headX,
+        headY,
+        headZ
+      );
+
+      skin.rightArm.rotation.set(
+        rightX,
+        0,
+        rightZ
+      );
+
+      skin.leftArm.rotation.set(
+        leftX,
+        0,
+        leftZ
+      );
+
+      player.rotation.y =
+        -0.12*standing +
+        Math.sin(t*0.5)*0.035;
 
       requestAnimationFrame(animate);
     }
@@ -1042,7 +1205,7 @@ async function createSkinViewer(canvasId) {
 
     console.log("Personagem carregado:",canvasId);
 
-  } catch (error) {
+  } catch(error) {
     console.error(
       "Erro ao carregar personagem:",
       canvasId,
