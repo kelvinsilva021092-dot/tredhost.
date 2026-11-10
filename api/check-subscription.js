@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
       });
 
       return res.status(500).json({
+        active: false,
         error: "Configuração do servidor incompleta"
       });
     }
@@ -30,6 +31,7 @@ module.exports = async (req, res) => {
       });
     }
 
+    // Validar a sessão do usuário
     const userResponse = await fetch(
       `${supabaseUrl}/auth/v1/user`,
       {
@@ -57,12 +59,13 @@ module.exports = async (req, res) => {
 
     const user = await userResponse.json();
 
+    // Consultar assinatura usando a sessão do próprio usuário
     const subscriptionResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&select=status,mp_preapproval_id`,
       {
         headers: {
           apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`
+          Authorization: authorization
         }
       }
     );
@@ -71,12 +74,10 @@ module.exports = async (req, res) => {
       const errorDetails = await subscriptionResponse.text();
 
       console.error(
-        "Erro na consulta Supabase:",
+        "ERRO NA CONSULTA SUPABASE:",
         subscriptionResponse.status,
         errorDetails
       );
-
-      console.log("DETALHE SUPABASE:", errorDetails);
 
       return res.status(500).json({
         active: false,
@@ -97,7 +98,7 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro ao verificar assinatura:", error);
+    console.error("ERRO AO VERIFICAR ASSINATURA:", error);
 
     return res.status(500).json({
       active: false,
