@@ -1,186 +1,759 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090710">
 <title>TredHost | Área de Membros</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#090710;color:#fff;font-family:Arial,sans-serif}
-:root{--purple:#a855f7;--muted:#aaa}
-header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #251b35}
-.logo{font-size:25px;font-weight:bold;color:#c084fc}
-button{background:linear-gradient(90deg,#9333ea,#6d28d9);border:0;border-radius:9px;padding:13px 20px;color:white;font-weight:bold;cursor:pointer}
-button:hover{opacity:.88}
-input{width:100%;padding:14px;margin:8px 0;background:#15111e;border:1px solid #38264c;border-radius:8px;color:white}
-main{max-width:1050px;margin:auto;padding:45px 20px}
-.hero{text-align:center;padding:35px 10px 45px}
-.hero h1{font-size:42px;margin-bottom:12px}
-.hero p,.muted{color:var(--muted);line-height:1.6}
-.price{font-size:32px;color:#c084fc;font-weight:bold;margin:22px}
-.old{font-size:17px;color:#888;text-decoration:line-through;margin-right:10px}
-.panel{max-width:430px;margin:25px auto;background:#120d1c;border:1px solid #352044;border-radius:15px;padding:25px}
-.panel h2{text-align:center}
-.hidden{display:none!important}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:25px}
-.video{background:#15101f;border:1px solid #30213e;border-radius:12px;padding:20px;min-height:130px}
-.video h3{margin-top:0;color:#d8b4fe}
-.section-title{margin-top:40px}
-#message{text-align:center;color:#d8b4fe;min-height:22px;font-size:14px}
-footer{text-align:center;padding:35px;color:#777}
-@media(max-width:600px){.hero h1{font-size:31px}header{padding:18px 5%}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg:#090710;
+  --panel:#130d1e;
+  --purple:#a855f7;
+  --light:#d8b4fe;
+  --muted:#aaa0b7;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(126,34,206,.20),transparent 55%),
+    #090710;
+  color:white;
+  font-family:Inter,Arial,sans-serif;
+  min-height:100vh;
+}
+
+body:before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.13;
+  background-image:radial-gradient(#c084fc 1px,transparent 1px);
+  background-size:45px 45px;
+}
+
+header {
+  position:relative;
+  z-index:2;
+  padding:20px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #30203e;
+  background:rgba(9,7,16,.9);
+}
+
+.logo {
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#e9d5ff;
+}
+
+.logo span {
+  color:var(--purple);
+}
+
+button {
+  background:linear-gradient(100deg,#a855f7,#6d28d9);
+  border:0;
+  border-radius:9px;
+  padding:14px 20px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover {
+  filter:brightness(1.15);
+  transform:translateY(-1px);
+}
+
+button:disabled {
+  opacity:.5;
+  cursor:wait;
+}
+
+main {
+  position:relative;
+  z-index:1;
+  max-width:1150px;
+  margin:auto;
+  padding:45px 22px 65px;
+}
+
+.hero {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  padding:45px 6%;
+  min-height:370px;
+  border:1px solid #38234d;
+  border-radius:22px;
+  background:linear-gradient(120deg,#1b1029,#0e0a17);
+  overflow:hidden;
+  position:relative;
+}
+
+.hero:before {
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  right:5%;
+  background:rgba(147,51,234,.18);
+  filter:blur(75px);
+  border-radius:50%;
+}
+
+.hero-content {
+  position:relative;
+  z-index:1;
+  max-width:620px;
+}
+
+.tag {
+  display:inline-block;
+  color:#e9d5ff;
+  background:#28143b;
+  border:1px solid #653b87;
+  padding:8px 13px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.hero h1 {
+  font-size:clamp(35px,5vw,57px);
+  line-height:1.08;
+  letter-spacing:-2px;
+  margin:22px 0 15px;
+}
+
+.hero h1 span {
+  color:#c084fc;
+}
+
+.hero p {
+  color:#b8adca;
+  line-height:1.7;
+  max-width:550px;
+}
+
+.mascot {
+  position:relative;
+  z-index:1;
+  flex:0 0 240px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.mascot img {
+  width:230px;
+  height:280px;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 25px rgba(168,85,247,.35));
+}
+
+.price {
+  margin-top:24px;
+  font-size:35px;
+  font-weight:900;
+}
+
+.old {
+  font-size:17px;
+  color:#888;
+  text-decoration:line-through;
+  font-weight:500;
+  margin-right:8px;
+}
+
+.price small {
+  font-size:14px;
+  color:#aaa0b7;
+  font-weight:500;
+}
+
+.price-note {
+  font-size:12px;
+  color:#93889e;
+}
+
+.panel {
+  max-width:440px;
+  margin:35px auto;
+  background:linear-gradient(145deg,#191024,#100b19);
+  border:1px solid #38234d;
+  border-radius:17px;
+  padding:28px;
+  box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+.panel h2 {
+  text-align:center;
+  margin:0 0 8px;
+}
+
+.panel .subtitle {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+input {
+  width:100%;
+  padding:15px;
+  margin:7px 0;
+  background:#0b0812;
+  border:1px solid #38264c;
+  border-radius:9px;
+  color:white;
+  font-size:14px;
+  outline:none;
+}
+
+input:focus {
+  border-color:#a855f7;
+  box-shadow:0 0 0 3px rgba(168,85,247,.12);
+}
+
+.panel button {
+  width:100%;
+  margin-top:10px;
+}
+
+.switch {
+  text-align:center;
+  color:#aaa;
+  font-size:13px;
+  margin-top:20px;
+}
+
+a {
+  color:#d8b4fe;
+  text-decoration:none;
+}
+
+a:hover {
+  text-decoration:underline;
+}
+
+.forgot {
+  text-align:center;
+  font-size:12px;
+  margin-top:14px;
+}
+
+#message {
+  text-align:center;
+  color:#d8b4fe;
+  min-height:20px;
+  font-size:12px;
+  margin-top:12px;
+  line-height:1.5;
+}
+
+.hidden {
+  display:none!important;
+}
+
+.section-title {
+  margin:45px 0 20px;
+}
+
+.section-title h2 {
+  font-size:27px;
+}
+
+.muted {
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+  margin-top:22px;
+}
+
+.video {
+  background:linear-gradient(145deg,#191024,#100b19);
+  border:1px solid #38234d;
+  border-radius:14px;
+  padding:23px;
+  min-height:155px;
+  transition:.2s;
+}
+
+.video:hover {
+  transform:translateY(-3px);
+  border-color:#9254c7;
+}
+
+.video .symbol {
+  font-size:25px;
+  margin-bottom:16px;
+}
+
+.video h3 {
+  color:#e9d5ff;
+  margin:0 0 9px;
+  font-size:16px;
+}
+
+.video p {
+  font-size:13px;
+}
+
+.account {
+  margin-top:35px;
+  padding:14px;
+  border:1px solid #38234d;
+  border-radius:10px;
+  text-align:center;
+  color:#b8adca;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+footer {
+  position:relative;
+  z-index:1;
+  text-align:center;
+  padding:30px;
+  border-top:1px solid #251b35;
+  color:#777;
+  font-size:12px;
+}
+
+@media(max-width:700px) {
+  header {
+    padding:18px 5%;
+  }
+
+  main {
+    padding:25px 14px 50px;
+  }
+
+  .hero {
+    flex-direction:column;
+    text-align:center;
+    padding:32px 20px 15px;
+    gap:10px;
+  }
+
+  .hero-content {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .hero h1 {
+    font-size:36px;
+    letter-spacing:-1px;
+  }
+
+  .mascot {
+    flex:auto;
+    height:205px;
+  }
+
+  .mascot img {
+    width:180px;
+    height:205px;
+  }
+
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .panel {
+    padding:23px 18px;
+  }
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo">TREDHOST</div>
+  <div class="logo">TRED<span>HOST</span></div>
   <button id="logout" class="hidden" onclick="logout()">Sair</button>
 </header>
 
 <main>
-  <section id="home">
-    <div class="hero">
-      <h1>Entre para o mundo TredHost</h1>
-      <p>Conteúdos exclusivos, projetos especiais e bastidores do universo Minecraft.</p>
-      <div class="price"><span class="old">R$ 24,90</span>R$ 14,90 <small>/mês</small></div>
-      <p class="muted">Acesso à área exclusiva mediante assinatura ativa.</p>
+
+<section id="home">
+
+  <div class="hero">
+
+    <div class="hero-content">
+
+      <div class="tag">✦ Universo Minecraft</div>
+
+      <h1>Seu próximo mundo <span>começa aqui.</span></h1>
+
+      <p>
+        Projetos completos, conteúdos exclusivos e bastidores
+        das construções. Um espaço especial para quem acompanha
+        cada aventura.
+      </p>
+
+      <div class="price">
+        <span class="old">R$ 24,90</span>
+        R$ 14,90
+        <small>/ mês</small>
+      </div>
+
+      <p class="price-note">
+        Acesso à área exclusiva mediante assinatura ativa.
+      </p>
+
     </div>
 
-    <div class="panel">
-      <h2 id="formTitle">Acesse sua conta</h2>
-      <input id="email" type="email" placeholder="Seu e-mail">
-      <input id="password" type="password" placeholder="Sua senha">
-      <button style="width:100%" id="submitBtn" onclick="login()">Entrar</button>
-      <p style="text-align:center;color:#aaa;font-size:14px">
-        <span id="switchText">Ainda não tem conta?</span>
-        <a href="#" onclick="switchMode();return false" style="color:#c084fc" id="switchLink">Criar conta</a>
-      </p>
-      <p style="text-align:center">
-        <a href="#" onclick="resetPassword();return false" style="color:#aaa;font-size:13px">Esqueci minha senha</a>
-      </p>
-      <div id="message"></div>
+    <div class="mascot">
+      <img
+        src="https://api.mcskin.me/body/tredzerakkj?size=256"
+        alt="Personagem Minecraft do TredHost"
+        onerror="this.style.display='none'"
+      >
     </div>
-  </section>
 
-  <section id="dashboard" class="hidden">
-    <div class="hero">
-      <h1>Bem-vindo à TredHost</h1>
-      <p>Seu espaço exclusivo de conteúdo Minecraft.</p>
+  </div>
+
+  <div class="panel">
+
+    <h2 id="formTitle">Acesse sua conta</h2>
+
+    <p class="subtitle">
+      Entre para continuar no TredHost
+    </p>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Seu e-mail"
+      autocomplete="email"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Sua senha"
+      autocomplete="current-password"
+    >
+
+    <button id="submitBtn" onclick="login()">
+      Entrar
+    </button>
+
+    <p class="switch">
+      <span id="switchText">Ainda não tem conta?</span>
+      <a
+        href="#"
+        id="switchLink"
+        onclick="switchMode();return false"
+      >Criar conta</a>
+    </p>
+
+    <p class="forgot">
+      <a
+        href="#"
+        onclick="resetPassword();return false"
+      >Esqueci minha senha</a>
+    </p>
+
+    <div id="message" aria-live="polite"></div>
+
+  </div>
+
+</section>
+
+
+<section id="dashboard" class="hidden">
+
+  <div class="hero">
+
+    <div class="hero-content">
+
+      <div class="tag">✦ Área de membros</div>
+
+      <h1>Bem-vindo ao <span>TredHost.</span></h1>
+
+      <p>
+        Seu espaço exclusivo para acompanhar projetos,
+        vídeos especiais e novidades do universo Minecraft.
+      </p>
+
     </div>
-    <h2 class="section-title">Sua área de membros</h2>
-    <p class="muted">Aqui ficarão disponíveis os conteúdos exclusivos.</p>
-    <div class="grid">
-      <div class="video">
-        <h3>🎬 Vídeos exclusivos</h3>
-        <p class="muted">Projetos completos e conteúdos especiais.</p>
-      </div>
-      <div class="video">
-        <h3>🌌 Bastidores</h3>
-        <p class="muted">Veja como os projetos são criados.</p>
-      </div>
-      <div class="video">
-        <h3>⛏️ Projetos especiais</h3>
-        <p class="muted">Mundos, construções e novidades.</p>
-      </div>
+
+    <div class="mascot">
+      <img
+        src="https://api.mcskin.me/body/tredzerakkj?size=256"
+        alt="Personagem Minecraft do TredHost"
+      >
     </div>
-    <p id="userEmail" class="muted" style="text-align:center;margin-top:35px"></p>
-  </section>
+
+  </div>
+
+  <div class="section-title">
+    <h2>Sua área exclusiva</h2>
+    <p class="muted">
+      Os espaços estão preparados para receber seus conteúdos.
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <div class="video">
+      <div class="symbol">🎬</div>
+      <h3>Vídeos exclusivos</h3>
+      <p class="muted">
+        Projetos completos e conteúdos especiais.
+      </p>
+    </div>
+
+    <div class="video">
+      <div class="symbol">🌌</div>
+      <h3>Bastidores</h3>
+      <p class="muted">
+        Veja como os projetos são criados.
+      </p>
+    </div>
+
+    <div class="video">
+      <div class="symbol">⛏️</div>
+      <h3>Projetos especiais</h3>
+      <p class="muted">
+        Mundos, construções e novidades.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="account">
+    Conta conectada: <span id="userEmail"></span>
+  </div>
+
+</section>
+
 </main>
 
-<footer>TREDHOST © 2026</footer>
+<footer>
+  TREDHOST © 2026 · Feito para a comunidade Minecraft
+</footer>
+
 
 <script>
-const SUPABASE_URL = "https://rcoxaqflmdigqltckqdq.supabase.co";
-const SUPABASE_KEY = "sb_publishable_aKgqpbqlcza4-469muFlhg_Ur7VmJR-";
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL =
+"https://rcoxaqflmdigqltckqdq.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_aKgqpbqlcza4-469muFlhg_Ur7VmJR-";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 let mode = "login";
 
-function message(text){
+
+function message(text) {
   document.getElementById("message").textContent = text;
 }
 
-function switchMode(){
+
+function switchMode() {
+
   mode = mode === "login" ? "signup" : "login";
+
   document.getElementById("formTitle").textContent =
-    mode === "login" ? "Acesse sua conta" : "Crie sua conta";
+    mode === "login"
+    ? "Acesse sua conta"
+    : "Crie sua conta";
+
   document.getElementById("submitBtn").textContent =
-    mode === "login" ? "Entrar" : "Criar conta";
+    mode === "login"
+    ? "Entrar"
+    : "Criar conta";
+
   document.getElementById("switchText").textContent =
-    mode === "login" ? "Ainda não tem conta?" : "Já possui uma conta?";
+    mode === "login"
+    ? "Ainda não tem conta?"
+    : "Já possui uma conta?";
+
   document.getElementById("switchLink").textContent =
-    mode === "login" ? "Criar conta" : "Fazer login";
+    mode === "login"
+    ? "Criar conta"
+    : "Fazer login";
+
+  document.getElementById("password").autocomplete =
+    mode === "login"
+    ? "current-password"
+    : "new-password";
+
   message("");
 }
 
-async function login(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  if(!email || !password){message("Preencha seu e-mail e sua senha.");return;}
+
+async function login() {
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  if (!email || !password) {
+    message("Preencha seu e-mail e sua senha.");
+    return;
+  }
+
   const btn = document.getElementById("submitBtn");
+
   btn.disabled = true;
   message("Aguarde...");
-  try{
-    if(mode === "login"){
-      const {error} = await db.auth.signInWithPassword({email,password});
-      if(error) throw error;
-      message("Login realizado com sucesso!");
-    }else{
-      const {data,error} = await db.auth.signUp({
-        email,password,
-        options:{emailRedirectTo:window.location.origin}
-      });
-      if(error) throw error;
-      if(data.session){
-        message("Conta criada com sucesso!");
-      }else{
-        message("Cadastro realizado! Verifique seu e-mail para confirmar a conta.");
+
+  try {
+
+    if (mode === "login") {
+
+      const { error } =
+        await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+    } else {
+
+      const { data, error } =
+        await db.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
+        });
+
+      if (error) throw error;
+
+      if (!data.session) {
+        message(
+          "Cadastro realizado! Verifique seu e-mail para confirmar a conta."
+        );
+        return;
       }
+
     }
-  }catch(error){
+
+  } catch (error) {
+
     message(error.message || "Não foi possível concluir.");
-  }finally{
+
+  } finally {
+
     btn.disabled = false;
+
   }
 }
 
-async function resetPassword(){
-  const email = document.getElementById("email").value.trim();
-  if(!email){message("Digite seu e-mail primeiro.");return;}
-  const {error} = await db.auth.resetPasswordForEmail(email,{
-    redirectTo:window.location.origin
-  });
-  message(error ? error.message : "Confira seu e-mail para redefinir a senha.");
+
+async function resetPassword() {
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  if (!email) {
+    message("Digite seu e-mail primeiro.");
+    return;
+  }
+
+  const { error } =
+    await db.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin
+    });
+
+  message(
+    error
+    ? "Erro: " + error.message
+    : "Confira seu e-mail para redefinir a senha."
+  );
 }
 
-function showDashboard(user){
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  document.getElementById("logout").classList.remove("hidden");
-  document.getElementById("userEmail").textContent = user.email;
+
+function showDashboard(user) {
+
+  document.getElementById("home")
+    .classList.add("hidden");
+
+  document.getElementById("dashboard")
+    .classList.remove("hidden");
+
+  document.getElementById("logout")
+    .classList.remove("hidden");
+
+  document.getElementById("userEmail").textContent =
+    user.email || "Conta conectada";
+
 }
 
-function showHome(){
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("home").classList.remove("hidden");
-  document.getElementById("logout").classList.add("hidden");
+
+function showHome() {
+
+  document.getElementById("dashboard")
+    .classList.add("hidden");
+
+  document.getElementById("home")
+    .classList.remove("hidden");
+
+  document.getElementById("logout")
+    .classList.add("hidden");
+
 }
 
-async function logout(){
+
+async function logout() {
+
   await db.auth.signOut();
+
   showHome();
+
 }
 
-db.auth.onAuthStateChange((event,session)=>{
-  if(session?.user){
+
+db.auth.onAuthStateChange((event, session) => {
+
+  if (session?.user) {
     showDashboard(session.user);
-  }else{
+  } else {
     showHome();
   }
+
 });
+
 </script>
+
 </body>
 </html>
