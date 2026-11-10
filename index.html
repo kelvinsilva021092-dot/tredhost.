@@ -21,7 +21,6 @@
 }
 
 * { box-sizing:border-box; }
-
 html { scroll-behavior:smooth; }
 
 body {
@@ -209,6 +208,135 @@ main {
   transform-origin:bottom center;
 }
 
+/* PAREDE */
+
+.wall-panel {
+  position:absolute;
+  z-index:1;
+  right:2px;
+  top:55px;
+  width:128px;
+  height:390px;
+  border-left:2px solid rgba(192,132,252,.35);
+  border-right:1px solid rgba(192,132,252,.12);
+  border-radius:8px 0 0 0;
+  background:
+    linear-gradient(90deg,rgba(168,85,247,.12),rgba(30,15,44,.72)),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 45px,
+      rgba(192,132,252,.08) 46px 47px
+    );
+  box-shadow:
+    inset 10px 0 25px rgba(168,85,247,.08),
+    0 0 35px rgba(0,0,0,.25);
+}
+
+.wall-panel:before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(
+    transparent,
+    rgba(192,132,252,.5),
+    transparent
+  );
+}
+
+/* MOCHILA */
+
+.backpack-prop {
+  position:absolute;
+  z-index:2;
+  left:103px;
+  top:150px;
+  width:74px;
+  height:112px;
+  border-radius:15px 15px 12px 12px;
+  background:linear-gradient(135deg,#29213b,#100d1a 70%);
+  border:2px solid #76509b;
+  box-shadow:
+    8px 8px 15px rgba(0,0,0,.45),
+    inset 0 0 12px rgba(168,85,247,.16);
+  transform:rotate(-7deg);
+}
+
+.backpack-prop:before {
+  content:"";
+  position:absolute;
+  left:10px;
+  right:10px;
+  top:18px;
+  height:48px;
+  border-radius:8px;
+  background:linear-gradient(135deg,#3c2855,#1b1327);
+  border:1px solid #76509b;
+}
+
+.backpack-prop:after {
+  content:"";
+  position:absolute;
+  left:23px;
+  right:23px;
+  bottom:10px;
+  height:15px;
+  border-radius:4px;
+  border:1px solid #a855f7;
+  background:#251634;
+}
+
+.backpack-strap {
+  position:absolute;
+  z-index:4;
+  left:158px;
+  top:164px;
+  width:15px;
+  height:115px;
+  border-radius:12px;
+  border:3px solid #76509b;
+  transform:rotate(-8deg);
+  opacity:.9;
+}
+
+/* CELULAR */
+
+.phone-prop {
+  position:absolute;
+  z-index:5;
+  left:275px;
+  top:249px;
+  width:25px;
+  height:43px;
+  border-radius:5px;
+  background:#090710;
+  border:2px solid #b88be4;
+  box-shadow:0 0 12px rgba(168,85,247,.45);
+  transform:rotate(-8deg);
+}
+
+.phone-screen {
+  position:absolute;
+  inset:4px 3px;
+  border-radius:2px;
+  background:linear-gradient(145deg,#a855f7,#26113d);
+}
+
+.phone-screen:after {
+  content:"";
+  position:absolute;
+  width:5px;
+  height:2px;
+  border-radius:5px;
+  background:#e9d5ff;
+  bottom:-2px;
+  left:7px;
+}
+
+/* CANVAS 3D */
+
 .skin-canvas {
   position:absolute;
   z-index:3;
@@ -222,45 +350,11 @@ main {
     drop-shadow(0 0 15px rgba(168,85,247,.15));
 }
 
-.wood-log {
-  position:absolute;
-  z-index:1;
-  width:230px;
-  height:43px;
-  bottom:48px;
-  left:105px;
-  border-radius:9px;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 7px,
-      rgba(50,20,8,.35) 8px 10px
-    ),
-    linear-gradient(90deg,#59351f,#98603a,#59351f);
-  border:3px solid #3c2419;
-  box-shadow:0 12px 18px #0008;
-}
-
-.wood-log:before,
-.wood-log:after {
-  content:"";
-  position:absolute;
-  top:4px;
-  width:28px;
-  height:27px;
-  border:3px solid #bd8654;
-  border-radius:50%;
-  background:#704329;
-}
-
-.wood-log:before { left:-10px; }
-.wood-log:after { right:-10px; }
-
 /* BORBOLETA */
 
 .butterfly {
   position:absolute;
-  z-index:4;
+  z-index:6;
   left:-30px;
   top:115px;
   width:24px;
@@ -539,9 +633,7 @@ footer {
 /* TELAS MÉDIAS */
 
 @media(max-width:1000px) and (min-width:701px) {
-  .hero {
-    padding-right:210px;
-  }
+  .hero { padding-right:210px; }
 
   .mascot {
     right:-125px;
@@ -550,13 +642,8 @@ footer {
     transform-origin:bottom right;
   }
 
-  .hero-content {
-    max-width:550px;
-  }
-
-  .hero h1 {
-    font-size:43px;
-  }
+  .hero-content { max-width:550px; }
+  .hero h1 { font-size:43px; }
 }
 
 /* CELULAR */
@@ -587,9 +674,7 @@ footer {
     letter-spacing:-1px;
   }
 
-  .hero p {
-    font-size:14px;
-  }
+  .hero p { font-size:14px; }
 
   .mascot {
     position:relative;
@@ -608,8 +693,13 @@ footer {
   }
 
   .grid { grid-template-columns:1fr; }
-
   .panel { padding:23px 18px; }
+
+  .wall-panel {
+    right:0;
+    top:70px;
+    height:300px;
+  }
 }
 
 @media(prefers-reduced-motion:reduce) {
@@ -672,10 +762,18 @@ footer {
       </div>
 
       <div class="mascot-scene">
-        <div class="wood-log"></div>
+        <div class="wall-panel"></div>
+        <div class="backpack-prop"></div>
+        <div class="backpack-strap"></div>
+
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
+
+        <div class="phone-prop">
+          <div class="phone-screen"></div>
+        </div>
+
         <canvas class="skin-canvas" id="skinHome"></canvas>
       </div>
     </div>
@@ -739,10 +837,18 @@ footer {
       </div>
 
       <div class="mascot-scene">
-        <div class="wood-log"></div>
+        <div class="wall-panel"></div>
+        <div class="backpack-prop"></div>
+        <div class="backpack-strap"></div>
+
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
+
+        <div class="phone-prop">
+          <div class="phone-screen"></div>
+        </div>
+
         <canvas class="skin-canvas" id="skinDashboard"></canvas>
       </div>
     </div>
@@ -935,7 +1041,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- PERSONAGEM 3D COM ANIMAÇÃO -->
+<!-- PERSONAGEM 3D E NOVA ANIMAÇÃO -->
 
 <script type="module">
 import * as skinview3d from
@@ -949,13 +1055,14 @@ const viewers = [];
 const clamp = (v,min,max) =>
   Math.max(min,Math.min(max,v));
 
-const lerp = (a,b,t) =>
-  a+(b-a)*t;
-
 const smooth = (a,b,v) => {
   const x = clamp((v-a)/(b-a),0,1);
   return x*x*(3-2*x);
 };
+
+function lerp(a,b,t) {
+  return a+(b-a)*t;
+}
 
 async function createSkinViewer(canvasId) {
   const canvas = document.getElementById(canvasId);
@@ -989,233 +1096,128 @@ async function createSkinViewer(canvasId) {
 
     player.scale.set(1.12,1.12,1.12);
 
-    let scrollTarget = 0;
-    let scrollProgress = 0;
+    /*
+      POSE PRINCIPAL:
+      Personagem de lado, com uma perna levantada
+      e os braços posicionados para a composição.
+    */
 
-    function updateScroll() {
-      const availableScroll =
-        Math.max(
-          280,
-          document.documentElement.scrollHeight -
-          window.innerHeight
-        );
+    skin.head.rotation.set(0,0,0);
+    skin.body.rotation.set(0,0,0);
 
-      scrollTarget = clamp(
-        window.scrollY / Math.min(availableScroll,480),
-        0,
-        1
-      );
-    }
+    skin.rightLeg.position.x = -2;
+    skin.leftLeg.position.x = 2;
 
-    window.addEventListener(
-      "scroll",
-      updateScroll,
-      {passive:true}
-    );
+    skin.rightLeg.rotation.set(0.12,0,-0.04);
+    skin.leftLeg.rotation.set(-1.0,0,-0.12);
 
-    updateScroll();
+    skin.rightArm.rotation.set(-1.0,0,-0.45);
+    skin.leftArm.rotation.set(0.12,0,0.12);
 
-    function initialPose() {
-      skin.head.rotation.set(0,0,0);
-      skin.body.rotation.set(0,0,0);
+    player.position.set(0,0,0);
+    player.rotation.y = -0.48;
 
-      skin.rightArm.rotation.set(-0.12,0,-0.08);
-      skin.leftArm.rotation.set(-0.12,0,0.08);
-
-      skin.rightLeg.position.x = -2.5;
-      skin.leftLeg.position.x = 2.5;
-
-      skin.rightLeg.rotation.set(-1.05,0,-0.22);
-      skin.leftLeg.rotation.set(-1.05,0,0.22);
-
-      player.position.set(0,0,0);
-    }
-
-    initialPose();
-
-    let action = null;
-    let actionStart = 0;
-    let nextAction = performance.now()+2500;
-
-    const actions = [
-      {name:"lookLeft",duration:2.4},
-      {name:"lookRight",duration:2.8},
-      {name:"wave",duration:2.7},
-      {name:"scratch",duration:2.5},
-      {name:"stretch",duration:3.1},
-      {name:"butterfly",duration:3.4}
-    ];
-
-    function chooseAction(time) {
-      const selected =
-        actions[Math.floor(Math.random()*actions.length)];
-
-      action = selected;
-      actionStart = time;
-      nextAction = time + 4500 + Math.random()*4500;
-    }
-
-    let previousTime = performance.now();
+    let waveStart = 0;
+    let nextWave = performance.now()+9000;
+    let waving = false;
 
     function animate(time) {
       if (!canvas.isConnected) {
         viewer.dispose();
-        window.removeEventListener("scroll",updateScroll);
         return;
       }
 
-      const delta = Math.min(
-        (time-previousTime)/1000,
-        0.05
-      );
-
-      previousTime = time;
-
       const t = time/1000;
 
-      scrollProgress +=
-        (scrollTarget-scrollProgress) *
-        (1-Math.pow(0.0005,delta));
+      /*
+        RESPIRAÇÃO E MOVIMENTOS NATURAIS
+      */
 
-      const p = scrollProgress;
+      const breathing = Math.sin(t*2.1)*0.025;
+      const bodySway = Math.sin(t*0.75)*0.025;
 
-      const standing = smooth(0.08,0.48,p);
-      const walking = smooth(0.58,0.88,p);
-      const idle = 1-walking;
-
-      const breathing = Math.sin(t*2.1);
-      const bodyBreathing = breathing*0.025;
-
-      const bodySway = Math.sin(t*0.75)*0.045;
-      const headSway = Math.sin(t*0.9)*0.07;
-      const headNod = Math.sin(t*1.6)*0.025;
-
-      const sittingAngle = -1.05*(1-standing);
-      const walkingCycle = t*7.5;
-      const step = Math.sin(walkingCycle)*0.48*walking;
-
-      skin.rightLeg.position.x = lerp(-2.5,-2,p);
-      skin.leftLeg.position.x = lerp(2.5,2,p);
-
-      skin.rightLeg.rotation.set(
-        sittingAngle+step,
-        0,
-        -0.22*(1-standing)
+      skin.body.rotation.set(
+        breathing,
+        bodySway,
+        Math.sin(t*0.65)*0.018
       );
 
-      skin.leftLeg.rotation.set(
-        sittingAngle-step,
-        0,
-        0.22*(1-standing)
-      );
+      /*
+        BORBOLETA:
+        A cabeça acompanha a passagem dela.
+      */
 
-      const walkBounce =
-        Math.abs(Math.sin(walkingCycle))*0.055*walking;
+      const butterflyPhase = (t%10)/10;
 
-      player.position.y =
-        Math.sin(t*2.1)*0.035*idle +
-        walkBounce;
+      const butterflyNear =
+        smooth(0.08,0.30,butterflyPhase) *
+        (1-smooth(0.45,0.68,butterflyPhase));
 
-      player.position.x =
-        Math.sin(t*0.55)*0.07 +
-        walking*0.9;
-
-      let bodyX =
-        bodyBreathing +
-        Math.sin(walkingCycle)*0.055*walking;
-
-      let bodyZ =
-        bodySway*idle +
-        Math.sin(walkingCycle)*0.035*walking;
-
-      let bodyY = Math.sin(t*0.7)*0.025;
+      const butterflyLook =
+        Math.sin(butterflyPhase*Math.PI*2)*0.30;
 
       let headY =
-        Math.sin(t*0.55)*0.12 +
-        headSway;
+        -0.48 +
+        butterflyLook*butterflyNear;
 
       let headX =
-        headNod +
         Math.sin(t*0.8)*0.025;
 
       let headZ =
-        Math.sin(t*0.65)*0.035;
+        Math.sin(t*0.65)*0.025;
 
-      let rightX =
-        -0.12 +
-        Math.sin(walkingCycle)*0.42*walking;
+      /*
+        ACENO PARA A CÂMERA:
+        Começa após 9 segundos e se repete
+        aproximadamente a cada 11,5 segundos.
+      */
 
-      let leftX =
-        -0.12 -
-        Math.sin(walkingCycle)*0.42*walking;
-
-      let rightZ = -0.08;
-      let leftZ = 0.08;
-
-      if (!action && time>=nextAction && p<0.65) {
-        chooseAction(time);
+      if (!waving && time>=nextWave) {
+        waving = true;
+        waveStart = time;
       }
 
-      let actionStrength = 0;
+      if (waving) {
+        const elapsed = (time-waveStart)/1000;
+        const duration = 2.5;
+        const progress = clamp(elapsed/duration,0,1);
 
-      if (action) {
-        const elapsed = (time-actionStart)/1000;
-        const progress =
-          clamp(elapsed/action.duration,0,1);
+        const strength = Math.sin(progress*Math.PI);
 
-        actionStrength = Math.sin(progress*Math.PI);
+        /*
+          Braço esquerdo sobe para o cumprimento.
+        */
+
+        skin.leftArm.rotation.set(
+          lerp(0.12,-2.5,strength),
+          0,
+          lerp(0.12,0.15+Math.sin(t*12)*0.5,strength)
+        );
+
+        headY += 0.12*strength;
 
         if (progress>=1) {
-          action = null;
-          nextAction =
-            time+3000+Math.random()*5000;
+          waving = false;
+          nextWave = time+9000;
         }
+      } else {
+        skin.leftArm.rotation.set(
+          0.12,
+          0,
+          0.12
+        );
       }
 
-      if (action && actionStrength>0) {
-        const a = actionStrength;
+      /*
+        BRAÇO DIREITO:
+        Permanece na posição de segurar o celular.
+      */
 
-        if (action.name==="lookLeft") {
-          headY += -0.65*a;
-          headZ += 0.10*a;
-        }
-
-        if (action.name==="lookRight") {
-          headY += 0.65*a;
-          headZ -= 0.10*a;
-        }
-
-        if (action.name==="butterfly") {
-          headY += Math.sin(t*2.8)*0.5*a;
-          headX -= 0.20*a;
-        }
-
-        if (action.name==="wave") {
-          rightX = lerp(rightX,-2.5,a);
-          rightZ =
-            lerp(rightZ,-0.35+Math.sin(t*10)*0.5,a);
-          headY += 0.12*a;
-        }
-
-        if (action.name==="scratch") {
-          rightX = lerp(rightX,-1.8,a);
-          rightZ = lerp(rightZ,-0.85,a);
-          headZ += 0.18*a;
-          headX += 0.12*a;
-        }
-
-        if (action.name==="stretch") {
-          rightX = lerp(rightX,-1.15,a);
-          leftX = lerp(leftX,-1.15,a);
-          rightZ = lerp(rightZ,-0.45,a);
-          leftZ = lerp(leftZ,0.45,a);
-
-          bodyX -= 0.12*a;
-          headX -= 0.08*a;
-        }
-      }
-
-      skin.body.rotation.set(bodyX,bodyY,bodyZ);
+      skin.rightArm.rotation.set(
+        -1.0,
+        0,
+        -0.45
+      );
 
       skin.head.rotation.set(
         headX,
@@ -1223,21 +1225,16 @@ async function createSkinViewer(canvasId) {
         headZ
       );
 
-      skin.rightArm.rotation.set(
-        rightX,
-        0,
-        rightZ
-      );
+      /*
+        PEQUENO MOVIMENTO DO CORPO
+        SEM TIRAR O PERSONAGEM DO LUGAR.
+      */
 
-      skin.leftArm.rotation.set(
-        leftX,
-        0,
-        leftZ
-      );
+      player.position.x = Math.sin(t*0.55)*0.025;
+      player.position.y = Math.sin(t*2.1)*0.018;
 
       player.rotation.y =
-        -0.12*standing +
-        Math.sin(t*0.5)*0.035;
+        -0.48 + Math.sin(t*0.5)*0.018;
 
       requestAnimationFrame(animate);
     }
