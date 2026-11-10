@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/skin-proxy",
+      "destination": "https://api.mcskin.me/skin/tredzerakkj"
+    }
+  ]
+}
