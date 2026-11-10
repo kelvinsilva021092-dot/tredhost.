@@ -433,7 +433,6 @@ a:hover { text-decoration:underline; }
 .hidden { display:none!important; }
 
 .section-title { margin:45px 0 20px; }
-
 .section-title h2 { font-size:27px; }
 
 .muted {
@@ -498,7 +497,6 @@ footer {
 
 @media(max-width:700px) {
   header { padding:18px 5%; }
-
   main { padding:25px 14px 50px; }
 
   .hero {
@@ -531,7 +529,6 @@ footer {
   }
 
   .grid { grid-template-columns:1fr; }
-
   .panel { padding:23px 18px; }
 }
 
@@ -596,11 +593,9 @@ footer {
 
       <div class="mascot-scene">
         <div class="wood-log"></div>
-
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
-
         <canvas class="skin-canvas" id="skinHome"></canvas>
       </div>
     </div>
@@ -609,7 +604,6 @@ footer {
 
   <div class="panel">
     <h2 id="formTitle">Acesse sua conta</h2>
-
     <p class="subtitle">Entre para continuar no TredHost</p>
 
     <input id="email" type="email"
@@ -666,11 +660,9 @@ footer {
 
       <div class="mascot-scene">
         <div class="wood-log"></div>
-
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
-
         <canvas class="skin-canvas" id="skinDashboard"></canvas>
       </div>
     </div>
@@ -861,7 +853,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- CENA 3D PERSONALIZADA -->
+<!-- PERSONAGEM 3D -->
 <script type="module">
 import * as skinview3d from
   "https://cdn.jsdelivr.net/npm/skinview3d@3.4.2/+esm";
@@ -878,12 +870,12 @@ async function createSkinViewer(canvasId) {
   try {
     const viewer = new skinview3d.SkinViewer({
       canvas,
-      width: 270,
-      height: 310,
-      skin: SKIN_URL,
-      background: null,
-      fov: 35,
-      zoom: 0.85
+      width:270,
+      height:310,
+      skin:SKIN_URL,
+      background:null,
+      fov:35,
+      zoom:0.85
     });
 
     viewers.push(viewer);
@@ -901,30 +893,36 @@ async function createSkinViewer(canvasId) {
     const player = viewer.playerObject;
     const skin = player.skin;
 
-    // Posição de descanso sentado
+    // POSIÇÃO SENTADA COM PERNAS MAIS AFASTADAS
     function sitPose() {
-      skin.head.rotation.set(0, 0, 0);
-      skin.body.rotation.set(0, 0, 0);
+      skin.head.rotation.set(0,0,0);
+      skin.body.rotation.set(0,0,0);
 
-      skin.rightArm.rotation.set(0, 0, -0.08);
-      skin.leftArm.rotation.set(0, 0, 0.08);
+      skin.rightArm.rotation.set(-0.15,0,-0.08);
+      skin.leftArm.rotation.set(-0.15,0,0.08);
 
-      skin.rightLeg.rotation.set(-1.15, 0, 0);
-      skin.leftLeg.rotation.set(-1.15, 0, 0);
+      skin.rightLeg.position.x = -2.5;
+      skin.leftLeg.position.x = 2.5;
+
+      skin.rightLeg.rotation.set(-1.05,0,-0.22);
+      skin.leftLeg.rotation.set(-1.05,0,0.22);
 
       player.position.y = 0;
     }
 
-    // Posição em pé
+    // POSIÇÃO EM PÉ
     function standPose() {
-      skin.head.rotation.set(0, 0, 0);
-      skin.body.rotation.set(0, 0, 0);
+      skin.head.rotation.set(0,0,0);
+      skin.body.rotation.set(0,0,0);
 
-      skin.rightArm.rotation.set(0, 0, -0.08);
-      skin.leftArm.rotation.set(0, 0, 0.08);
+      skin.rightArm.rotation.set(0,0,-0.08);
+      skin.leftArm.rotation.set(0,0,0.08);
 
-      skin.rightLeg.rotation.set(0, 0, 0);
-      skin.leftLeg.rotation.set(0, 0, 0);
+      skin.rightLeg.position.x = -2;
+      skin.leftLeg.position.x = 2;
+
+      skin.rightLeg.rotation.set(0,0,0);
+      skin.leftLeg.rotation.set(0,0,0);
 
       player.position.y = 0;
     }
@@ -934,9 +932,6 @@ async function createSkinViewer(canvasId) {
     let greeting = false;
     let greetingStart = 0;
     let lastGreeting = performance.now();
-    let previousFrame = 0;
-
-    const butterfly = canvas.parentElement.querySelector(".butterfly");
 
     function animate(time) {
       if (!canvas.isConnected) {
@@ -946,20 +941,18 @@ async function createSkinViewer(canvasId) {
 
       const t = time / 1000;
 
-      if (!previousFrame) previousFrame = time;
-
-      // Movimento suave de descanso
+      // RESPIRAÇÃO SUAVE
       skin.body.rotation.x =
         Math.sin(t * 1.2) * 0.025;
 
-      // A cabeça acompanha a borboleta
-      const look = Math.sin(t * (Math.PI * 2 / 9));
+      // ACOMPANHA A BORBOLETA
+      skin.head.rotation.y =
+        Math.sin(t * (Math.PI * 2 / 9)) * 0.22;
 
-      skin.head.rotation.y = look * 0.22;
       skin.head.rotation.x =
         Math.sin(t * 1.4) * 0.035;
 
-      // Pequenos movimentos dos braços
+      // MOVIMENTO NATURAL DOS BRAÇOS
       if (!greeting) {
         skin.rightArm.rotation.z =
           -0.08 + Math.sin(t * 1.1) * 0.025;
@@ -968,7 +961,7 @@ async function createSkinViewer(canvasId) {
           0.08 - Math.sin(t * 1.1) * 0.025;
       }
 
-      // Cumprimento a cada 20 segundos
+      // CUMPRIMENTO A CADA 20 SEGUNDOS
       if (!greeting && time - lastGreeting >= 20000) {
         greeting = true;
         greetingStart = time;
@@ -978,19 +971,20 @@ async function createSkinViewer(canvasId) {
       if (greeting) {
         const elapsed = (time - greetingStart) / 1000;
 
-        // Levanta
+        // LEVANTA
         if (elapsed < 0.8) {
-          const p = Math.min(elapsed / 0.8, 1);
+          const p = Math.min(elapsed / 0.8,1);
 
           player.position.y = Math.sin(p * Math.PI / 2) * 2;
 
-          skin.rightLeg.rotation.x = -1.15 * (1 - p);
-          skin.leftLeg.rotation.x = -1.15 * (1 - p);
+          skin.rightLeg.rotation.x = -1.05 * (1-p);
+          skin.leftLeg.rotation.x = -1.05 * (1-p);
 
-          skin.head.rotation.y = 0;
+          skin.rightLeg.position.x = -2.5 + 0.5*p;
+          skin.leftLeg.position.x = 2.5 - 0.5*p;
         }
 
-        // Acena com a mão
+        // ACENA COM A MÃO
         else if (elapsed < 3) {
           const wave = Math.sin((elapsed - 0.8) * 9);
 
@@ -1001,17 +995,20 @@ async function createSkinViewer(canvasId) {
           skin.leftArm.rotation.z = 0.15;
         }
 
-        // Começa a sentar novamente
+        // VOLTA A SENTAR
         else if (elapsed < 3.8) {
-          const p = Math.min((elapsed - 3) / 0.8, 1);
+          const p = Math.min((elapsed - 3) / 0.8,1);
 
-          skin.rightArm.rotation.x = -2.7 * (1 - p);
-          skin.leftArm.rotation.x = -0.35 * (1 - p);
+          skin.rightArm.rotation.x = -2.7 * (1-p);
+          skin.leftArm.rotation.x = -0.35 * (1-p);
 
-          skin.rightLeg.rotation.x = -1.15 * p;
-          skin.leftLeg.rotation.x = -1.15 * p;
+          skin.rightLeg.rotation.x = -1.05 * p;
+          skin.leftLeg.rotation.x = -1.05 * p;
 
-          player.position.y = 2 * (1 - p);
+          skin.rightLeg.position.x = -2 + (-0.5 * p);
+          skin.leftLeg.position.x = 2 + (0.5 * p);
+
+          player.position.y = 2 * (1-p);
         }
 
         else {
@@ -1021,27 +1018,20 @@ async function createSkinViewer(canvasId) {
         }
       }
 
-      previousFrame = time;
-
       requestAnimationFrame(animate);
     }
 
     requestAnimationFrame(animate);
 
-    console.log("Cena 3D carregada:", canvasId);
+    console.log("Personagem carregado:",canvasId);
 
   } catch (error) {
-    console.error(
-      "Erro ao carregar personagem:",
-      canvasId,
-      error
-    );
+    console.error("Erro ao carregar personagem:",canvasId,error);
   }
 }
 
 createSkinViewer("skinHome");
 createSkinViewer("skinDashboard");
-
 </script>
 
 </body>
