@@ -22,18 +22,13 @@
 
 * { box-sizing:border-box; }
 
-html {
-  scroll-behavior:smooth;
-  overflow-x:hidden;
-}
+html { scroll-behavior:smooth; overflow-x:hidden; }
 
 body {
   margin:0;
   min-height:100vh;
   overflow-x:hidden;
-  background:
-    radial-gradient(ellipse at 50% 0%,rgba(126,34,206,.20),transparent 55%),
-    #090710;
+  background:radial-gradient(ellipse at 50% 0%,rgba(126,34,206,.20),transparent 55%),#090710;
   color:white;
   font-family:Inter,Arial,sans-serif;
 }
@@ -81,15 +76,8 @@ button {
   transition:.2s;
 }
 
-button:hover {
-  filter:brightness(1.15);
-  transform:translateY(-1px);
-}
-
-button:disabled {
-  opacity:.5;
-  cursor:wait;
-}
+button:hover { filter:brightness(1.15); transform:translateY(-1px); }
+button:disabled { opacity:.5; cursor:wait; }
 
 main {
   position:relative;
@@ -98,8 +86,6 @@ main {
   margin:auto;
   padding:45px 22px 65px;
 }
-
-/* BANNER */
 
 .hero {
   display:flex;
@@ -164,13 +150,7 @@ main {
 
 .hero h1 span { color:#c084fc; }
 
-.hero p {
-  color:#b8adca;
-  line-height:1.7;
-  max-width:550px;
-}
-
-/* PERSONAGEM 3D */
+.hero p { color:#b8adca; line-height:1.7; max-width:550px; }
 
 .mascot {
   position:absolute;
@@ -223,17 +203,9 @@ main {
   left:50%;
   transform:translateX(-50%);
   border-radius:13px;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(65,31,13,.25) 0 8px,
-      transparent 9px 17px
-    ),
-    linear-gradient(180deg,#a56a36,#70401f 65%,#4a2919);
+  background:repeating-linear-gradient(0deg,rgba(65,31,13,.25) 0 8px,transparent 9px 17px),linear-gradient(180deg,#a56a36,#70401f 65%,#4a2919);
   border:3px solid #482719;
-  box-shadow:
-    inset 0 8px 12px rgba(255,205,130,.16),
-    0 14px 25px rgba(0,0,0,.5);
+  box-shadow:inset 0 8px 12px rgba(255,205,130,.16),0 14px 25px rgba(0,0,0,.5);
 }
 
 .log-seat:before {
@@ -246,13 +218,7 @@ main {
   transform:translateY(-1px);
   border-radius:50%;
   border:4px solid #583019;
-  background:
-    repeating-radial-gradient(
-      circle,
-      #c18a52 0 5px,
-      #936039 6px 9px,
-      #6d4228 10px 12px
-    );
+  background:repeating-radial-gradient(circle,#c18a52 0 5px,#936039 6px 9px,#6d4228 10px 12px);
   box-shadow:inset 0 0 12px rgba(0,0,0,.35);
 }
 
@@ -264,12 +230,8 @@ main {
   bottom:0;
   left:0;
   display:block;
-  filter:
-    drop-shadow(0 15px 22px rgba(168,85,247,.3))
-    drop-shadow(0 0 12px rgba(168,85,247,.12));
+  filter:drop-shadow(0 15px 22px rgba(168,85,247,.3)) drop-shadow(0 0 12px rgba(168,85,247,.12));
 }
-
-/* BORBOLETA */
 
 .butterfly {
   position:absolute;
@@ -282,8 +244,7 @@ main {
   pointer-events:none;
 }
 
-.butterfly:before,
-.butterfly:after {
+.butterfly:before,.butterfly:after {
   content:"";
   position:absolute;
   width:12px;
@@ -338,8 +299,6 @@ main {
   to { transform:rotateY(-65deg); }
 }
 
-/* PARTÍCULAS */
-
 .particles {
   position:absolute;
   inset:0;
@@ -373,8 +332,6 @@ main {
   100% { transform:translateY(-350px) scale(1.4); opacity:0; }
 }
 
-/* PREÇO */
-
 .price {
   margin-top:24px;
   font-size:35px;
@@ -389,18 +346,8 @@ main {
   margin-right:8px;
 }
 
-.price small {
-  font-size:14px;
-  color:#aaa0b7;
-  font-weight:500;
-}
-
-.price-note {
-  font-size:12px;
-  color:#93889e;
-}
-
-/* LOGIN */
+.price small { font-size:14px; color:#aaa0b7; font-weight:500; }
+.price-note { font-size:12px; color:#93889e; }
 
 .panel {
   position:relative;
@@ -414,17 +361,8 @@ main {
   box-shadow:0 15px 50px rgba(0,0,0,.25);
 }
 
-.panel h2 {
-  text-align:center;
-  margin:0 0 8px;
-}
-
-.panel .subtitle {
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:20px;
-}
+.panel h2 { text-align:center; margin:0 0 8px; }
+.panel .subtitle { text-align:center; color:var(--muted); font-size:13px; margin-bottom:20px; }
 
 input {
   width:100%;
@@ -438,35 +376,13 @@ input {
   outline:none;
 }
 
-input:focus {
-  border-color:#a855f7;
-  box-shadow:0 0 0 3px rgba(168,85,247,.12);
-}
+input:focus { border-color:#a855f7; box-shadow:0 0 0 3px rgba(168,85,247,.12); }
+.panel button { width:100%; margin-top:10px; }
 
-.panel button {
-  width:100%;
-  margin-top:10px;
-}
-
-.switch {
-  text-align:center;
-  color:#aaa;
-  font-size:13px;
-  margin-top:20px;
-}
-
-a {
-  color:#d8b4fe;
-  text-decoration:none;
-}
-
+.switch { text-align:center; color:#aaa; font-size:13px; margin-top:20px; }
+a { color:#d8b4fe; text-decoration:none; }
 a:hover { text-decoration:underline; }
-
-.forgot {
-  text-align:center;
-  font-size:12px;
-  margin-top:14px;
-}
+.forgot { text-align:center; font-size:12px; margin-top:14px; }
 
 #message {
   text-align:center;
@@ -479,20 +395,9 @@ a:hover { text-decoration:underline; }
 
 .hidden { display:none!important; }
 
-/* ÁREA DE MEMBROS */
-
-.section-title {
-  position:relative;
-  z-index:2;
-  margin:45px 0 20px;
-}
-
+.section-title { position:relative; z-index:2; margin:45px 0 20px; }
 .section-title h2 { font-size:27px; }
-
-.muted {
-  color:var(--muted);
-  line-height:1.6;
-}
+.muted { color:var(--muted); line-height:1.6; }
 
 .grid {
   position:relative;
@@ -512,22 +417,9 @@ a:hover { text-decoration:underline; }
   transition:.2s;
 }
 
-.video:hover {
-  transform:translateY(-3px);
-  border-color:#9254c7;
-}
-
-.video .symbol {
-  font-size:25px;
-  margin-bottom:16px;
-}
-
-.video h3 {
-  color:#e9d5ff;
-  margin:0 0 9px;
-  font-size:16px;
-}
-
+.video:hover { transform:translateY(-3px); border-color:#9254c7; }
+.video .symbol { font-size:25px; margin-bottom:16px; }
+.video h3 { color:#e9d5ff; margin:0 0 9px; font-size:16px; }
 .video p { font-size:13px; }
 
 .account {
@@ -553,29 +445,184 @@ footer {
   font-size:12px;
 }
 
-/* TELAS MÉDIAS */
+/* TELA DE ASSINATURA NÃO ATIVA */
+
+#subscriptionPage {
+  max-width:760px;
+  margin:20px auto 50px;
+}
+
+.subscription-card {
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  padding:48px 35px;
+  border:1px solid #553477;
+  border-radius:22px;
+  background:linear-gradient(145deg,#1c102b,#100a19 75%);
+  box-shadow:0 20px 70px rgba(0,0,0,.35);
+}
+
+.subscription-card:before {
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  top:-170px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#9333ea;
+  filter:blur(100px);
+  opacity:.25;
+  pointer-events:none;
+}
+
+.lock-icon {
+  position:relative;
+  width:76px;
+  height:76px;
+  margin:0 auto 23px;
+  display:grid;
+  place-items:center;
+  border:1px solid #7846a7;
+  border-radius:22px;
+  background:#28163b;
+  font-size:34px;
+  box-shadow:0 0 35px rgba(168,85,247,.18);
+}
+
+.subscription-card h1 {
+  position:relative;
+  font-size:clamp(28px,5vw,40px);
+  margin:0 0 15px;
+  letter-spacing:-1.5px;
+}
+
+.subscription-card h1 span { color:#c084fc; }
+
+.subscription-description {
+  position:relative;
+  max-width:530px;
+  margin:0 auto;
+  color:#b8adca;
+  font-size:15px;
+  line-height:1.8;
+}
+
+.subscription-price {
+  position:relative;
+  margin:30px auto 12px;
+  padding:23px;
+  max-width:380px;
+  border:1px solid #4c3065;
+  border-radius:15px;
+  background:rgba(10,7,17,.65);
+}
+
+.subscription-price .old-price {
+  color:#8f8499;
+  text-decoration:line-through;
+  font-size:16px;
+  margin-right:8px;
+}
+
+.subscription-price strong {
+  font-size:39px;
+  font-weight:900;
+  color:#fff;
+}
+
+.subscription-price small {
+  color:#b8adca;
+  font-size:14px;
+}
+
+.subscription-price .discount {
+  display:block;
+  margin-top:7px;
+  color:#d8b4fe;
+  font-size:12px;
+}
+
+.benefits {
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  max-width:470px;
+  margin:25px auto;
+  text-align:left;
+}
+
+.benefit {
+  color:#d8cce5;
+  font-size:13px;
+  padding:12px;
+  border:1px solid #342344;
+  border-radius:9px;
+  background:rgba(255,255,255,.025);
+}
+
+.benefit span { color:#c084fc; margin-right:7px; }
+
+.subscribe-button {
+  position:relative;
+  width:100%;
+  max-width:380px;
+  padding:18px 22px;
+  margin-top:12px;
+  border-radius:11px;
+  font-size:14px;
+  letter-spacing:.5px;
+  box-shadow:0 8px 30px rgba(126,34,206,.3);
+}
+
+.subscription-help {
+  position:relative;
+  margin:22px auto 0;
+  max-width:490px;
+  color:#9e92ad;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.subscription-status {
+  position:relative;
+  margin-top:15px;
+  color:#d8b4fe;
+  font-size:13px;
+  min-height:20px;
+}
+
+.subscription-actions {
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+
+.subscription-actions button {
+  background:transparent;
+  border:1px solid #553477;
+  color:#d8b4fe;
+  padding:11px 16px;
+}
+
+.subscription-actions a { font-size:13px; }
 
 @media(max-width:1000px) and (min-width:701px) {
   .hero { padding-right:190px; }
-
-  .mascot {
-    right:-65px;
-    bottom:-75px;
-    width:300px;
-    height:370px;
-  }
-
+  .mascot { right:-65px; bottom:-75px; width:300px; height:370px; }
   .hero-content { max-width:550px; }
   .hero h1 { font-size:43px; }
 }
 
-/* CELULAR */
-
 @media(max-width:700px) {
   header { padding:18px 5%; }
-
   main { padding:25px 14px 50px; }
-
   .hero {
     flex-direction:column;
     text-align:center;
@@ -584,54 +631,25 @@ footer {
     min-height:520px;
     margin-bottom:55px;
   }
-
-  .hero-content {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-
-  .hero h1 {
-    font-size:36px;
-    letter-spacing:-1px;
-  }
-
+  .hero-content { display:flex; flex-direction:column; align-items:center; }
+  .hero h1 { font-size:36px; letter-spacing:-1px; }
   .hero p { font-size:14px; }
-
-  .mascot {
-    right:-100px;
-    bottom:-45px;
-    width:220px;
-    height:280px;
-    opacity:.8;
-  }
-
+  .mascot { right:-100px; bottom:-45px; width:220px; height:280px; opacity:.8; }
   .grid { grid-template-columns:1fr; }
-
-  .panel {
-    padding:23px 18px;
-    z-index:3;
-  }
-
+  .panel { padding:23px 18px; z-index:3; }
   .price { font-size:30px; }
+  .subscription-card { padding:38px 19px; }
+  .benefits { grid-template-columns:1fr; }
+  .subscription-price strong { font-size:34px; }
 }
 
 @media(max-width:380px) {
-  .mascot {
-    right:-115px;
-    width:205px;
-    height:260px;
-  }
-
+  .mascot { right:-115px; width:205px; height:260px; }
   .hero h1 { font-size:32px; }
 }
 
 @media(prefers-reduced-motion:reduce) {
-  .particle,
-  .mascot-glow,
-  .butterfly,
-  .butterfly:before,
-  .butterfly:after {
+  .particle,.mascot-glow,.butterfly,.butterfly:before,.butterfly:after {
     animation:none;
   }
 }
@@ -648,92 +666,105 @@ footer {
 <main>
 
 <section id="home">
-
   <div class="hero">
-
     <div class="hero-content">
       <div class="tag">✦ Universo Minecraft</div>
-
       <h1>Seu próximo mundo <span>começa aqui.</span></h1>
-
       <p>
         Projetos completos, conteúdos exclusivos e bastidores
         das construções. Um espaço especial para quem acompanha
         cada aventura.
       </p>
-
       <div class="price">
         <span class="old">R$ 24,90</span>
-        R$ 14,90
-        <small>/ mês</small>
+        R$ 14,90 <small>/ mês</small>
       </div>
-
-      <p class="price-note">
-        Acesso à área exclusiva mediante assinatura ativa.
-      </p>
+      <p class="price-note">Acesso à área exclusiva mediante assinatura ativa.</p>
     </div>
 
     <div class="mascot">
       <div class="mascot-glow"></div>
-
       <div class="particles">
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
+        <i class="particle"></i><i class="particle"></i><i class="particle"></i>
+        <i class="particle"></i><i class="particle"></i><i class="particle"></i>
       </div>
-
       <div class="mascot-scene">
         <div class="log-seat"></div>
-        <div class="butterfly">
-          <span class="butterfly-body"></span>
-        </div>
+        <div class="butterfly"><span class="butterfly-body"></span></div>
         <canvas class="skin-canvas" id="skinHome"></canvas>
       </div>
     </div>
-
   </div>
 
   <div class="panel">
     <h2 id="formTitle">Acesse sua conta</h2>
     <p class="subtitle">Entre para continuar no MEMBROStred</p>
-
-    <input id="email" type="email"
-      placeholder="Seu e-mail" autocomplete="email">
-
-    <input id="password" type="password"
-      placeholder="Sua senha" autocomplete="current-password">
-
+    <input id="email" type="email" placeholder="Seu e-mail" autocomplete="email">
+    <input id="password" type="password" placeholder="Sua senha" autocomplete="current-password">
     <button id="submitBtn" onclick="login()">Entrar</button>
-
     <p class="switch">
       <span id="switchText">Ainda não tem conta?</span>
-      <a href="#" id="switchLink"
-        onclick="switchMode();return false">Criar conta</a>
+      <a href="#" id="switchLink" onclick="switchMode();return false">Criar conta</a>
     </p>
-
     <p class="forgot">
-      <a href="#" onclick="resetPassword();return false">
-        Esqueci minha senha
-      </a>
+      <a href="#" onclick="resetPassword();return false">Esqueci minha senha</a>
     </p>
-
     <div id="message" aria-live="polite"></div>
   </div>
+</section>
 
+<!-- NOVA TELA PARA QUEM NÃO TEM ASSINATURA ATIVA -->
+<section id="subscriptionPage" class="hidden">
+  <div class="subscription-card">
+    <div class="lock-icon">🔒</div>
+
+    <div class="tag">✦ Acesso exclusivo</div>
+
+    <h1>Seu acesso ainda <span>não está liberado.</span></h1>
+
+    <p class="subscription-description">
+      Sua conta foi reconhecida, mas você ainda não possui uma assinatura ativa.
+      Torne-se membro para desbloquear os conteúdos exclusivos do MEMBROStred
+      e acompanhar de perto cada projeto.
+    </p>
+
+    <div class="subscription-price">
+      <span class="old-price">R$ 24,90</span>
+      <strong>R$ 14,90</strong>
+      <small>/ mês</small>
+      <span class="discount">Sua assinatura mensal</span>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit"><span>✦</span> Vídeos exclusivos</div>
+      <div class="benefit"><span>✦</span> Bastidores dos projetos</div>
+      <div class="benefit"><span>✦</span> Conteúdos especiais</div>
+      <div class="benefit"><span>✦</span> Novidades para membros</div>
+    </div>
+
+    <button id="subscribeButton" class="subscribe-button" onclick="startSubscription()">
+      QUERO ME TORNAR MEMBRO
+    </button>
+
+    <div id="subscriptionStatus" class="subscription-status" aria-live="polite"></div>
+
+    <p class="subscription-help">
+      Já realizou o pagamento? A confirmação pode levar alguns instantes.
+      Você também pode sair e entrar novamente para atualizar seu acesso.
+    </p>
+
+    <div class="subscription-actions">
+      <button onclick="checkMySubscription()">Já sou membro — verificar acesso</button>
+      <a href="#" onclick="logout();return false">Sair da minha conta</a>
+    </div>
+  </div>
 </section>
 
 <section id="dashboard" class="hidden">
-
   <div class="hero">
-
     <div class="hero-content">
       <div class="tag">✦ Área de membros</div>
-
       <h1>Bem-vindo ao <span>MEMBROStred.</span></h1>
-
       <p>
         Seu espaço exclusivo para acompanhar projetos,
         vídeos especiais e novidades do universo Minecraft.
@@ -742,60 +773,44 @@ footer {
 
     <div class="mascot">
       <div class="mascot-glow"></div>
-
       <div class="particles">
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
-        <i class="particle"></i>
+        <i class="particle"></i><i class="particle"></i><i class="particle"></i>
+        <i class="particle"></i><i class="particle"></i><i class="particle"></i>
       </div>
-
       <div class="mascot-scene">
         <div class="log-seat"></div>
-        <div class="butterfly">
-          <span class="butterfly-body"></span>
-        </div>
+        <div class="butterfly"><span class="butterfly-body"></span></div>
         <canvas class="skin-canvas" id="skinDashboard"></canvas>
       </div>
     </div>
-
   </div>
 
   <div class="section-title">
     <h2>Sua área exclusiva</h2>
-    <p class="muted">
-      Os espaços estão preparados para receber seus conteúdos.
-    </p>
+    <p class="muted">Os espaços estão preparados para receber seus conteúdos.</p>
   </div>
 
   <div class="grid">
-
     <div class="video">
       <div class="symbol">🎬</div>
       <h3>Vídeos exclusivos</h3>
       <p class="muted">Projetos completos e conteúdos especiais.</p>
     </div>
-
     <div class="video">
       <div class="symbol">🌌</div>
       <h3>Bastidores</h3>
       <p class="muted">Veja como os projetos são criados.</p>
     </div>
-
     <div class="video">
       <div class="symbol">⛏️</div>
       <h3>Projetos especiais</h3>
       <p class="muted">Mundos, construções e novidades.</p>
     </div>
-
   </div>
 
   <div class="account">
     Conta conectada: <span id="userEmail"></span>
   </div>
-
 </section>
 
 </main>
@@ -811,16 +826,24 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_aKgqpbqlcza4-469muFlhg_Ur7VmJR-";
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let mode = "login";
 let subscriptionCheckVersion = 0;
+let currentSession = null;
 
 function message(text) {
   document.getElementById("message").textContent = text;
+}
+
+function showSubscriptionStatus(text) {
+  document.getElementById("subscriptionStatus").textContent = text;
+}
+
+function hideAllSections() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("subscriptionPage").classList.add("hidden");
 }
 
 function switchMode() {
@@ -833,9 +856,7 @@ function switchMode() {
     mode === "login" ? "Entrar" : "Criar conta";
 
   document.getElementById("switchText").textContent =
-    mode === "login"
-      ? "Ainda não tem conta?"
-      : "Já possui uma conta?";
+    mode === "login" ? "Ainda não tem conta?" : "Já possui uma conta?";
 
   document.getElementById("switchLink").textContent =
     mode === "login" ? "Criar conta" : "Fazer login";
@@ -861,32 +882,22 @@ async function login() {
 
   try {
     if (mode === "login") {
-      const { error } = await db.auth.signInWithPassword({
-        email,
-        password
-      });
-
+      const { error } = await db.auth.signInWithPassword({ email, password });
       if (error) throw error;
-
     } else {
       const { data, error } = await db.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: window.location.origin
-        }
+        options: { emailRedirectTo: window.location.origin }
       });
 
       if (error) throw error;
 
       if (!data.session) {
-        message(
-          "Cadastro realizado! Verifique seu e-mail para confirmar a conta."
-        );
+        message("Cadastro realizado! Verifique seu e-mail para confirmar a conta.");
         return;
       }
     }
-
   } catch (error) {
     message(error.message || "Não foi possível concluir.");
   } finally {
@@ -913,23 +924,19 @@ async function resetPassword() {
   );
 }
 
-/* VERIFICA A ASSINATURA ANTES DE LIBERAR O PAINEL */
+/* VERIFICA A ASSINATURA */
 
 async function showDashboard(user, accessToken) {
   const checkVersion = ++subscriptionCheckVersion;
+  currentSession = { user, accessToken };
 
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("dashboard").classList.add("hidden");
+  hideAllSections();
   document.getElementById("logout").classList.add("hidden");
-
-  message("Verificando sua assinatura...");
 
   try {
     const response = await fetch("/api/check-subscription", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
+      headers: { Authorization: `Bearer ${accessToken}` }
     });
 
     const result = await response.json();
@@ -938,54 +945,122 @@ async function showDashboard(user, accessToken) {
 
     if (!response.ok) {
       showHome();
-      message(
-        result.error ||
-        "Não foi possível verificar sua assinatura."
-      );
+      message(result.error || "Não foi possível verificar sua assinatura.");
       return;
     }
 
     if (!result.active) {
-      showHome();
-      message(
-        "Sua assinatura ainda não está ativa. Assine para liberar o acesso."
-      );
+      showSubscriptionPage();
       return;
     }
 
-    document.getElementById("home").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
-    document.getElementById("logout").classList.remove("hidden");
-
-    document.getElementById("userEmail").textContent =
-      user.email || "Conta conectada";
-
-    window.scrollTo({ top:0, behavior:"smooth" });
-
+    showMemberDashboard(user);
   } catch (error) {
     if (checkVersion !== subscriptionCheckVersion) return;
-
     showHome();
-    message(
-      "Erro ao verificar sua assinatura. Tente novamente."
-    );
+    message("Erro ao verificar sua assinatura. Tente novamente.");
   }
 }
 
 function showHome() {
-  document.getElementById("dashboard").classList.add("hidden");
+  hideAllSections();
   document.getElementById("home").classList.remove("hidden");
   document.getElementById("logout").classList.add("hidden");
 }
 
+function showSubscriptionPage() {
+  hideAllSections();
+  document.getElementById("subscriptionPage").classList.remove("hidden");
+  document.getElementById("logout").classList.remove("hidden");
+  showSubscriptionStatus("");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function showMemberDashboard(user) {
+  hideAllSections();
+  document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("logout").classList.remove("hidden");
+  document.getElementById("userEmail").textContent =
+    user.email || "Conta conectada";
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+/* INICIA A ASSINATURA NO MERCADO PAGO */
+
+async function startSubscription() {
+  if (!currentSession?.accessToken) {
+    showSubscriptionStatus("Sua sessão expirou. Entre novamente na sua conta.");
+    return;
+  }
+
+  const button = document.getElementById("subscribeButton");
+  button.disabled = true;
+  button.textContent = "AGUARDE...";
+
+  showSubscriptionStatus("Estamos preparando sua assinatura com segurança...");
+
+  try {
+    const response = await fetch("/api/create-subscription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentSession.accessToken}`
+      }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.init_point) {
+      throw new Error(result.error || "Não foi possível iniciar sua assinatura.");
+    }
+
+    window.location.href = result.init_point;
+  } catch (error) {
+    showSubscriptionStatus(error.message || "Erro ao iniciar assinatura. Tente novamente.");
+    button.disabled = false;
+    button.textContent = "QUERO ME TORNAR MEMBRO";
+  }
+}
+
+/* ATUALIZA A ASSINATURA DEPOIS DO PAGAMENTO */
+
+async function checkMySubscription() {
+  if (!currentSession?.user) return;
+
+  const button = document.querySelector(".subscription-actions button");
+  button.disabled = true;
+  button.textContent = "VERIFICANDO...";
+
+  showSubscriptionStatus("Consultando sua assinatura...");
+
+  try {
+    const { data, error } = await db.auth.getSession();
+    if (error) throw error;
+
+    if (!data.session) {
+      throw new Error("Sua sessão expirou. Entre novamente.");
+    }
+
+    await showDashboard(data.session.user, data.session.access_token);
+  } catch (error) {
+    showSubscriptionStatus(error.message || "Não foi possível atualizar o acesso.");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Já sou membro — verificar acesso";
+  }
+}
+
 async function logout() {
+  subscriptionCheckVersion++;
   const { error } = await db.auth.signOut();
 
   if (error) {
+    showSubscriptionStatus("Não foi possível sair: " + error.message);
     message("Não foi possível sair: " + error.message);
     return;
   }
 
+  currentSession = null;
   showHome();
 }
 
@@ -994,6 +1069,7 @@ db.auth.onAuthStateChange((event, session) => {
     showDashboard(session.user, session.access_token);
   } else {
     subscriptionCheckVersion++;
+    currentSession = null;
     showHome();
   }
 });
@@ -1007,8 +1083,7 @@ import * as skinview3d from
 
 const SKIN_URL = window.location.origin + "/skin-proxy";
 
-const clamp = (v,min,max) =>
-  Math.max(min,Math.min(max,v));
+const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
 
 const smooth = (a,b,v) => {
   const x = clamp((v-a)/(b-a),0,1);
@@ -1036,7 +1111,6 @@ async function createSkinViewer(canvasId) {
 
     viewer.globalLight.intensity = 2.8;
     viewer.cameraLight.intensity = 0.8;
-
     viewer.autoRotate = false;
     viewer.controls.enableRotate = false;
     viewer.controls.enableZoom = false;
@@ -1073,41 +1147,28 @@ async function createSkinViewer(canvasId) {
 
       let standing;
 
-      if (cycle < 7) {
-        standing = 0;
-      } else if (cycle < 10) {
-        standing = standUp;
-      } else {
-        standing = 1-sitDown;
-      }
+      if (cycle < 7) standing = 0;
+      else if (cycle < 10) standing = standUp;
+      else standing = 1-sitDown;
 
       const seated = 1-standing;
-
       const seatedLeg = -1.05;
 
       skin.rightLeg.rotation.set(
-        lerp(seatedLeg,0,standing),
-        0,
-        lerp(-0.12,0,standing)
+        lerp(seatedLeg,0,standing),0,lerp(-0.12,0,standing)
       );
 
       skin.leftLeg.rotation.set(
-        lerp(seatedLeg,0,standing),
-        0,
-        lerp(0.12,0,standing)
+        lerp(seatedLeg,0,standing),0,lerp(0.12,0,standing)
       );
 
       const breathing = Math.sin(t*2.1)*0.018;
 
       skin.body.rotation.set(
-        breathing,
-        Math.sin(t*.75)*.025,
-        Math.sin(t*.65)*.018
+        breathing,Math.sin(t*.75)*.025,Math.sin(t*.65)*.018
       );
 
-      player.position.y =
-        -0.12*seated +
-        Math.sin(t*2.1)*.018;
+      player.position.y = -0.12*seated + Math.sin(t*2.1)*.018;
 
       const butterflyPhase = (t%10)/10;
 
@@ -1115,17 +1176,12 @@ async function createSkinViewer(canvasId) {
         smooth(.08,.30,butterflyPhase) *
         (1-smooth(.45,.68,butterflyPhase));
 
-      const butterflyLook =
-        Math.sin(butterflyPhase*Math.PI*2)*.3;
+      const butterflyLook = Math.sin(butterflyPhase*Math.PI*2)*.3;
 
       let headY = butterflyLook*butterflyNear;
       let headX = Math.sin(t*.8)*.025;
 
-      skin.rightArm.rotation.set(
-        lerp(-.1,.12,standing),
-        0,
-        -.08
-      );
+      skin.rightArm.rotation.set(lerp(-.1,.12,standing),0,-.08);
 
       let leftArmX = lerp(-.15,.12,standing);
       let leftArmZ = .08;
@@ -1135,41 +1191,22 @@ async function createSkinViewer(canvasId) {
         const waveStrength = Math.sin(waveProgress*Math.PI);
 
         leftArmX = lerp(.12,-2.5,waveStrength);
-
-        leftArmZ =
-          .12 + Math.sin(t*12)*.5*waveStrength;
-
+        leftArmZ = .12 + Math.sin(t*12)*.5*waveStrength;
         headY += .1*waveStrength;
       }
 
-      skin.leftArm.rotation.set(
-        leftArmX,
-        0,
-        leftArmZ
-      );
-
-      skin.head.rotation.set(
-        headX,
-        headY,
-        Math.sin(t*.65)*.02
-      );
-
-      player.rotation.y =
-        -.35 + Math.sin(t*.5)*.018;
+      skin.leftArm.rotation.set(leftArmX,0,leftArmZ);
+      skin.head.rotation.set(headX,headY,Math.sin(t*.65)*.02);
+      player.rotation.y = -.35 + Math.sin(t*.5)*.018;
 
       requestAnimationFrame(animate);
     }
 
     requestAnimationFrame(animate);
-
     console.log("Personagem carregado:",canvasId);
 
   } catch(error) {
-    console.error(
-      "Erro ao carregar personagem:",
-      canvasId,
-      error
-    );
+    console.error("Erro ao carregar personagem:",canvasId,error);
   }
 }
 
