@@ -22,6 +22,8 @@
 
 * { box-sizing:border-box; }
 
+html { scroll-behavior:smooth; }
+
 body {
   margin:0;
   background:
@@ -95,9 +97,9 @@ main {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:30px;
-  padding:45px 6%;
-  min-height:370px;
+  gap:25px;
+  padding:40px 5%;
+  min-height:420px;
   border:1px solid #38234d;
   border-radius:22px;
   background:linear-gradient(120deg,#1b1029,#0e0a17);
@@ -150,11 +152,13 @@ main {
   max-width:550px;
 }
 
+/* PERSONAGEM */
+
 .mascot {
   position:relative;
   z-index:1;
-  flex:0 0 300px;
-  height:320px;
+  flex:0 0 360px;
+  height:390px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -163,11 +167,11 @@ main {
 
 .mascot-glow {
   position:absolute;
-  width:190px;
-  height:190px;
+  width:230px;
+  height:230px;
   border-radius:50%;
   background:rgba(168,85,247,.22);
-  filter:blur(55px);
+  filter:blur(60px);
   z-index:0;
   animation:glow 4s ease-in-out infinite alternate;
 }
@@ -179,8 +183,8 @@ main {
 
 .mascot-scene {
   position:relative;
-  width:300px;
-  height:320px;
+  width:360px;
+  height:390px;
   display:flex;
   justify-content:center;
   align-items:flex-end;
@@ -191,8 +195,8 @@ main {
 .skin-canvas {
   position:absolute;
   z-index:3;
-  width:270px;
-  height:310px;
+  width:330px;
+  height:380px;
   bottom:0;
   left:15px;
   display:block;
@@ -205,7 +209,7 @@ main {
   width:190px;
   height:37px;
   bottom:45px;
-  left:55px;
+  left:85px;
   border-radius:9px;
   background:
     repeating-linear-gradient(
@@ -329,8 +333,10 @@ main {
 @keyframes particleRise {
   0% { transform:translateY(0) scale(.5); opacity:0; }
   20% { opacity:.9; }
-  100% { transform:translateY(-260px) scale(1.4); opacity:0; }
+  100% { transform:translateY(-300px) scale(1.4); opacity:0; }
 }
+
+/* RESTANTE DO SITE */
 
 .price {
   margin-top:24px;
@@ -519,12 +525,12 @@ footer {
 
   .mascot {
     flex:auto;
-    height:280px;
+    height:330px;
     width:100%;
   }
 
   .mascot-scene {
-    transform:scale(.85);
+    transform:scale(.88);
     transform-origin:bottom center;
   }
 
@@ -825,6 +831,8 @@ function showDashboard(user) {
 
   document.getElementById("userEmail").textContent =
     user.email || "Conta conectada";
+
+  window.scrollTo({ top:0, behavior:"smooth" });
 }
 
 function showHome() {
@@ -853,7 +861,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- PERSONAGEM 3D -->
+<!-- PERSONAGEM 3D E INTERAÇÃO COM A ROLAGEM -->
 <script type="module">
 import * as skinview3d from
   "https://cdn.jsdelivr.net/npm/skinview3d@3.4.2/+esm";
@@ -870,8 +878,8 @@ async function createSkinViewer(canvasId) {
   try {
     const viewer = new skinview3d.SkinViewer({
       canvas,
-      width:270,
-      height:310,
+      width:330,
+      height:380,
       skin:SKIN_URL,
       background:null,
       fov:35,
@@ -893,7 +901,25 @@ async function createSkinViewer(canvasId) {
     const player = viewer.playerObject;
     const skin = player.skin;
 
-    // POSIÇÃO SENTADA COM PERNAS MAIS AFASTADAS
+    let scrollTarget = 0;
+    let scrollProgress = 0;
+
+    // A rolagem controla a transformação do personagem.
+    function updateScroll() {
+      const maxScroll = 300;
+
+      scrollTarget = Math.max(
+        0,
+        Math.min(1, window.scrollY / maxScroll)
+      );
+    }
+
+    window.addEventListener("scroll", updateScroll, {
+      passive:true
+    });
+
+    updateScroll();
+
     function sitPose() {
       skin.head.rotation.set(0,0,0);
       skin.body.rotation.set(0,0,0);
@@ -907,24 +933,7 @@ async function createSkinViewer(canvasId) {
       skin.rightLeg.rotation.set(-1.05,0,-0.22);
       skin.leftLeg.rotation.set(-1.05,0,0.22);
 
-      player.position.y = 0;
-    }
-
-    // POSIÇÃO EM PÉ
-    function standPose() {
-      skin.head.rotation.set(0,0,0);
-      skin.body.rotation.set(0,0,0);
-
-      skin.rightArm.rotation.set(0,0,-0.08);
-      skin.leftArm.rotation.set(0,0,0.08);
-
-      skin.rightLeg.position.x = -2;
-      skin.leftLeg.position.x = 2;
-
-      skin.rightLeg.rotation.set(0,0,0);
-      skin.leftLeg.rotation.set(0,0,0);
-
-      player.position.y = 0;
+      player.position.set(0,0,0);
     }
 
     sitPose();
@@ -936,85 +945,93 @@ async function createSkinViewer(canvasId) {
     function animate(time) {
       if (!canvas.isConnected) {
         viewer.dispose();
+        window.removeEventListener("scroll", updateScroll);
         return;
       }
 
       const t = time / 1000;
 
-      // RESPIRAÇÃO SUAVE
-      skin.body.rotation.x =
-        Math.sin(t * 1.2) * 0.025;
+      // Suaviza a transição para não acompanhar a roda de forma brusca.
+      scrollProgress +=
+        (scrollTarget - scrollProgress) * 0.075;
 
-      // ACOMPANHA A BORBOLETA
+      const p = scrollProgress;
+
+      // 0 = sentado | 1 = em pé
+      const legAngle = -1.05 * (1-p);
+
+      skin.rightLeg.position.x = -2.5 + 0.5*p;
+      skin.leftLeg.position.x = 2.5 - 0.5*p;
+
+      skin.rightLeg.rotation.set(
+        legAngle,
+        0,
+        -0.22 * (1-p)
+      );
+
+      skin.leftLeg.rotation.set(
+        legAngle,
+        0,
+        0.22 * (1-p)
+      );
+
+      // O personagem muda de posição conforme a página desce.
+      player.position.x = 2.2 * p;
+      player.position.y = 1.1 * p;
+
+      // Inclina o corpo gradualmente ao se levantar.
+      skin.body.rotation.x =
+        Math.sin(t * 1.2) * 0.025 + 0.035*p;
+
+      skin.body.rotation.z = -0.08*p;
+
+      // Olhar acompanha a borboleta e reage à rolagem.
       skin.head.rotation.y =
-        Math.sin(t * (Math.PI * 2 / 9)) * 0.22;
+        Math.sin(t * (Math.PI * 2 / 9)) * 0.22
+        - 0.16*p;
 
       skin.head.rotation.x =
-        Math.sin(t * 1.4) * 0.035;
+        Math.sin(t * 1.4) * 0.035
+        - 0.06*p;
 
-      // MOVIMENTO NATURAL DOS BRAÇOS
-      if (!greeting) {
-        skin.rightArm.rotation.z =
-          -0.08 + Math.sin(t * 1.1) * 0.025;
+      // Braços ficam relaxados sentado e se movimentam em pé.
+      skin.rightArm.rotation.x =
+        -0.15 + Math.sin(t*4)*0.12*p;
 
-        skin.leftArm.rotation.z =
-          0.08 - Math.sin(t * 1.1) * 0.025;
-      }
+      skin.leftArm.rotation.x =
+        -0.15 - Math.sin(t*4)*0.12*p;
 
-      // CUMPRIMENTO A CADA 20 SEGUNDOS
-      if (!greeting && time - lastGreeting >= 20000) {
-        greeting = true;
-        greetingStart = time;
-        standPose();
-      }
+      skin.rightArm.rotation.z =
+        -0.08 + 0.025*Math.sin(t*1.1)
+        - 0.12*p;
 
-      if (greeting) {
-        const elapsed = (time - greetingStart) / 1000;
+      skin.leftArm.rotation.z =
+        0.08 - 0.025*Math.sin(t*1.1)
+        + 0.12*p;
 
-        // LEVANTA
-        if (elapsed < 0.8) {
-          const p = Math.min(elapsed / 0.8,1);
-
-          player.position.y = Math.sin(p * Math.PI / 2) * 2;
-
-          skin.rightLeg.rotation.x = -1.05 * (1-p);
-          skin.leftLeg.rotation.x = -1.05 * (1-p);
-
-          skin.rightLeg.position.x = -2.5 + 0.5*p;
-          skin.leftLeg.position.x = 2.5 - 0.5*p;
+      // Cumprimento periódico quando está no topo da página.
+      if (p < 0.04) {
+        if (!greeting && time-lastGreeting >= 20000) {
+          greeting = true;
+          greetingStart = time;
         }
+      } else {
+        greeting = false;
+        lastGreeting = time;
+      }
 
-        // ACENA COM A MÃO
-        else if (elapsed < 3) {
-          const wave = Math.sin((elapsed - 0.8) * 9);
+      if (greeting && p < 0.04) {
+        const elapsed = (time-greetingStart)/1000;
+
+        if (elapsed < 2.2) {
+          const wave = Math.sin(elapsed*9);
 
           skin.rightArm.rotation.x = -2.7;
-          skin.rightArm.rotation.z = -0.25 + wave * 0.55;
-
-          skin.leftArm.rotation.x = -0.35;
-          skin.leftArm.rotation.z = 0.15;
-        }
-
-        // VOLTA A SENTAR
-        else if (elapsed < 3.8) {
-          const p = Math.min((elapsed - 3) / 0.8,1);
-
-          skin.rightArm.rotation.x = -2.7 * (1-p);
-          skin.leftArm.rotation.x = -0.35 * (1-p);
-
-          skin.rightLeg.rotation.x = -1.05 * p;
-          skin.leftLeg.rotation.x = -1.05 * p;
-
-          skin.rightLeg.position.x = -2 + (-0.5 * p);
-          skin.leftLeg.position.x = 2 + (0.5 * p);
-
-          player.position.y = 2 * (1-p);
-        }
-
-        else {
+          skin.rightArm.rotation.z = -0.25 + wave*0.55;
+          skin.head.rotation.y = 0;
+        } else {
           greeting = false;
           lastGreeting = time;
-          sitPose();
         }
       }
 
@@ -1026,7 +1043,11 @@ async function createSkinViewer(canvasId) {
     console.log("Personagem carregado:",canvasId);
 
   } catch (error) {
-    console.error("Erro ao carregar personagem:",canvasId,error);
+    console.error(
+      "Erro ao carregar personagem:",
+      canvasId,
+      error
+    );
   }
 }
 
