@@ -21,16 +21,21 @@
 }
 
 * { box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+
+html {
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+}
 
 body {
   margin:0;
+  min-height:100vh;
+  overflow-x:hidden;
   background:
     radial-gradient(ellipse at 50% 0%,rgba(126,34,206,.20),transparent 55%),
     #090710;
   color:white;
   font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
 }
 
 body:before {
@@ -41,17 +46,19 @@ body:before {
   opacity:.13;
   background-image:radial-gradient(#c084fc 1px,transparent 1px);
   background-size:45px 45px;
+  z-index:0;
 }
 
 header {
   position:relative;
-  z-index:10;
+  z-index:20;
   padding:20px 7%;
   display:flex;
   justify-content:space-between;
   align-items:center;
   border-bottom:1px solid #30203e;
   background:rgba(9,7,16,.9);
+  backdrop-filter:blur(12px);
 }
 
 .logo {
@@ -92,7 +99,7 @@ main {
   padding:45px 22px 65px;
 }
 
-/* BANNER PRINCIPAL */
+/* BANNER */
 
 .hero {
   display:flex;
@@ -163,29 +170,30 @@ main {
   max-width:550px;
 }
 
-/* PERSONAGEM SOBREPOSTO */
+/* PERSONAGEM SOBREPOSTO À PÁGINA */
 
 .mascot {
-  position:absolute;
-  z-index:5;
-  right:-105px;
-  bottom:-105px;
-  width:550px;
-  height:590px;
+  position:fixed;
+  z-index:8;
+  right:-35px;
+  bottom:-55px;
+  width:clamp(260px,28vw,365px);
+  height:clamp(310px,36vw,440px);
   display:flex;
   justify-content:center;
-  align-items:center;
+  align-items:flex-end;
   isolation:isolate;
   pointer-events:none;
 }
 
 .mascot-glow {
   position:absolute;
-  width:350px;
-  height:350px;
+  width:85%;
+  height:75%;
+  bottom:5%;
   border-radius:50%;
   background:rgba(168,85,247,.28);
-  filter:blur(85px);
+  filter:blur(75px);
   z-index:0;
   animation:glow 4s ease-in-out infinite alternate;
 }
@@ -197,15 +205,13 @@ main {
 
 .mascot-scene {
   position:relative;
-  width:440px;
-  height:480px;
+  width:100%;
+  height:100%;
   display:flex;
   justify-content:center;
   align-items:flex-end;
   isolation:isolate;
   z-index:2;
-  transform:scale(1.15);
-  transform-origin:bottom center;
 }
 
 /* PAREDE */
@@ -213,10 +219,10 @@ main {
 .wall-panel {
   position:absolute;
   z-index:1;
-  right:2px;
-  top:55px;
-  width:128px;
-  height:390px;
+  right:0;
+  top:12%;
+  width:27%;
+  height:78%;
   border-left:2px solid rgba(192,132,252,.35);
   border-right:1px solid rgba(192,132,252,.12);
   border-radius:8px 0 0 0;
@@ -251,10 +257,10 @@ main {
 .backpack-prop {
   position:absolute;
   z-index:2;
-  left:103px;
-  top:150px;
-  width:74px;
-  height:112px;
+  left:20%;
+  top:34%;
+  width:22%;
+  height:28%;
   border-radius:15px 15px 12px 12px;
   background:linear-gradient(135deg,#29213b,#100d1a 70%);
   border:2px solid #76509b;
@@ -267,10 +273,10 @@ main {
 .backpack-prop:before {
   content:"";
   position:absolute;
-  left:10px;
-  right:10px;
-  top:18px;
-  height:48px;
+  left:10%;
+  right:10%;
+  top:16%;
+  height:48%;
   border-radius:8px;
   background:linear-gradient(135deg,#3c2855,#1b1327);
   border:1px solid #76509b;
@@ -279,10 +285,10 @@ main {
 .backpack-prop:after {
   content:"";
   position:absolute;
-  left:23px;
-  right:23px;
-  bottom:10px;
-  height:15px;
+  left:30%;
+  right:30%;
+  bottom:9%;
+  height:14%;
   border-radius:4px;
   border:1px solid #a855f7;
   background:#251634;
@@ -291,12 +297,12 @@ main {
 .backpack-strap {
   position:absolute;
   z-index:4;
-  left:158px;
-  top:164px;
-  width:15px;
-  height:115px;
+  left:37%;
+  top:37%;
+  width:5%;
+  height:29%;
   border-radius:12px;
-  border:3px solid #76509b;
+  border:2px solid #76509b;
   transform:rotate(-8deg);
   opacity:.9;
 }
@@ -306,10 +312,12 @@ main {
 .phone-prop {
   position:absolute;
   z-index:5;
-  left:275px;
-  top:249px;
-  width:25px;
-  height:43px;
+  left:61%;
+  top:53%;
+  width:7%;
+  height:12%;
+  min-width:19px;
+  min-height:32px;
   border-radius:5px;
   background:#090710;
   border:2px solid #b88be4;
@@ -335,19 +343,19 @@ main {
   left:7px;
 }
 
-/* CANVAS 3D */
+/* PERSONAGEM 3D */
 
 .skin-canvas {
   position:absolute;
   z-index:3;
-  width:420px;
-  height:460px;
+  width:100%;
+  height:100%;
   bottom:0;
-  left:10px;
+  left:0;
   display:block;
   filter:
-    drop-shadow(0 15px 28px rgba(168,85,247,.4))
-    drop-shadow(0 0 15px rgba(168,85,247,.15));
+    drop-shadow(0 15px 22px rgba(168,85,247,.3))
+    drop-shadow(0 0 12px rgba(168,85,247,.12));
 }
 
 /* BORBOLETA */
@@ -355,8 +363,8 @@ main {
 .butterfly {
   position:absolute;
   z-index:6;
-  left:-30px;
-  top:115px;
+  left:-10%;
+  top:28%;
   width:24px;
   height:20px;
   animation:butterflyFlight 10s ease-in-out infinite;
@@ -401,12 +409,12 @@ main {
 }
 
 @keyframes butterflyFlight {
-  0% { left:-10%; top:110px; }
-  20% { left:20%; top:75px; }
-  40% { left:42%; top:135px; }
-  65% { left:68%; top:65px; }
-  80% { left:85%; top:115px; }
-  100% { left:115%; top:90px; }
+  0% { left:-10%; top:28%; }
+  20% { left:20%; top:19%; }
+  40% { left:42%; top:34%; }
+  65% { left:68%; top:17%; }
+  80% { left:85%; top:29%; }
+  100% { left:115%; top:22%; }
 }
 
 @keyframes wingLeft {
@@ -454,7 +462,7 @@ main {
   100% { transform:translateY(-350px) scale(1.4); opacity:0; }
 }
 
-/* RESTANTE DO SITE */
+/* PREÇO */
 
 .price {
   margin-top:24px;
@@ -481,9 +489,11 @@ main {
   color:#93889e;
 }
 
+/* LOGIN */
+
 .panel {
   position:relative;
-  z-index:1;
+  z-index:2;
   max-width:440px;
   margin:35px auto;
   background:linear-gradient(145deg,#191024,#100b19);
@@ -558,9 +568,11 @@ a:hover { text-decoration:underline; }
 
 .hidden { display:none!important; }
 
+/* CONTEÚDO DA ÁREA DE MEMBROS */
+
 .section-title {
   position:relative;
-  z-index:1;
+  z-index:2;
   margin:45px 0 20px;
 }
 
@@ -573,7 +585,7 @@ a:hover { text-decoration:underline; }
 
 .grid {
   position:relative;
-  z-index:1;
+  z-index:2;
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:17px;
@@ -609,7 +621,7 @@ a:hover { text-decoration:underline; }
 
 .account {
   position:relative;
-  z-index:1;
+  z-index:2;
   margin-top:35px;
   padding:14px;
   border:1px solid #38234d;
@@ -622,7 +634,7 @@ a:hover { text-decoration:underline; }
 
 footer {
   position:relative;
-  z-index:1;
+  z-index:2;
   text-align:center;
   padding:30px;
   border-top:1px solid #251b35;
@@ -633,13 +645,12 @@ footer {
 /* TELAS MÉDIAS */
 
 @media(max-width:1000px) and (min-width:701px) {
-  .hero { padding-right:210px; }
+  .hero { padding-right:190px; }
 
   .mascot {
-    right:-125px;
-    width:480px;
-    transform:scale(.88);
-    transform-origin:bottom right;
+    right:-55px;
+    width:285px;
+    height:350px;
   }
 
   .hero-content { max-width:550px; }
@@ -656,10 +667,9 @@ footer {
   .hero {
     flex-direction:column;
     text-align:center;
-    padding:32px 15px 0;
-    padding-right:15px;
+    padding:32px 15px;
     gap:10px;
-    min-height:650px;
+    min-height:520px;
     margin-bottom:55px;
   }
 
@@ -676,30 +686,43 @@ footer {
 
   .hero p { font-size:14px; }
 
+  /*
+    No celular, o personagem continua sobreposto,
+    mas menor e deslocado para não cobrir o formulário.
+  */
+
   .mascot {
-    position:relative;
-    right:auto;
-    bottom:auto;
-    width:100%;
-    height:390px;
-    margin-top:0;
-    flex:none;
-    transform:none;
+    right:-95px;
+    bottom:-30px;
+    width:220px;
+    height:270px;
+    opacity:.78;
   }
-
-  .mascot-scene {
-    transform:scale(.88);
-    transform-origin:bottom center;
-  }
-
-  .grid { grid-template-columns:1fr; }
-  .panel { padding:23px 18px; }
 
   .wall-panel {
     right:0;
-    top:70px;
-    height:300px;
+    top:12%;
+    height:75%;
   }
+
+  .grid { grid-template-columns:1fr; }
+
+  .panel {
+    padding:23px 18px;
+    z-index:3;
+  }
+
+  .price { font-size:30px; }
+}
+
+@media(max-width:380px) {
+  .mascot {
+    right:-115px;
+    width:205px;
+    height:250px;
+  }
+
+  .hero h1 { font-size:32px; }
 }
 
 @media(prefers-reduced-motion:reduce) {
@@ -1041,7 +1064,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- PERSONAGEM 3D E NOVA ANIMAÇÃO -->
+<!-- PERSONAGEM 3D -->
 
 <script type="module">
 import * as skinview3d from
@@ -1049,8 +1072,6 @@ import * as skinview3d from
 
 const SKIN_URL =
   window.location.origin + "/skin-proxy";
-
-const viewers = [];
 
 const clamp = (v,min,max) =>
   Math.max(min,Math.min(max,v));
@@ -1060,26 +1081,24 @@ const smooth = (a,b,v) => {
   return x*x*(3-2*x);
 };
 
-function lerp(a,b,t) {
-  return a+(b-a)*t;
-}
+const lerp = (a,b,t) => a+(b-a)*t;
 
 async function createSkinViewer(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
 
+  let viewer;
+
   try {
-    const viewer = new skinview3d.SkinViewer({
+    viewer = new skinview3d.SkinViewer({
       canvas,
       width:420,
       height:460,
       skin:SKIN_URL,
       background:null,
       fov:32,
-      zoom:1.05
+      zoom:0.88
     });
-
-    viewers.push(viewer);
 
     viewer.globalLight.intensity = 2.8;
     viewer.cameraLight.intensity = 0.8;
@@ -1094,12 +1113,12 @@ async function createSkinViewer(canvasId) {
     const player = viewer.playerObject;
     const skin = player.skin;
 
-    player.scale.set(1.12,1.12,1.12);
+    player.scale.set(1.05,1.05,1.05);
 
     /*
-      POSE PRINCIPAL:
-      Personagem de lado, com uma perna levantada
-      e os braços posicionados para a composição.
+      POSE DE LADO:
+      Uma perna levantada e braços posicionados
+      para a composição com mochila e celular.
     */
 
     skin.head.rotation.set(0,0,0);
@@ -1120,18 +1139,18 @@ async function createSkinViewer(canvasId) {
     let waveStart = 0;
     let nextWave = performance.now()+9000;
     let waving = false;
+    let stopped = false;
 
     function animate(time) {
-      if (!canvas.isConnected) {
+      if (!canvas.isConnected || stopped) {
+        stopped = true;
         viewer.dispose();
         return;
       }
 
       const t = time/1000;
 
-      /*
-        RESPIRAÇÃO E MOVIMENTOS NATURAIS
-      */
+      /* RESPIRAÇÃO E MOVIMENTO SUAVE */
 
       const breathing = Math.sin(t*2.1)*0.025;
       const bodySway = Math.sin(t*0.75)*0.025;
@@ -1142,10 +1161,7 @@ async function createSkinViewer(canvasId) {
         Math.sin(t*0.65)*0.018
       );
 
-      /*
-        BORBOLETA:
-        A cabeça acompanha a passagem dela.
-      */
+      /* ACOMPANHA A BORBOLETA */
 
       const butterflyPhase = (t%10)/10;
 
@@ -1157,8 +1173,7 @@ async function createSkinViewer(canvasId) {
         Math.sin(butterflyPhase*Math.PI*2)*0.30;
 
       let headY =
-        -0.48 +
-        butterflyLook*butterflyNear;
+        -0.48 + butterflyLook*butterflyNear;
 
       let headX =
         Math.sin(t*0.8)*0.025;
@@ -1166,11 +1181,7 @@ async function createSkinViewer(canvasId) {
       let headZ =
         Math.sin(t*0.65)*0.025;
 
-      /*
-        ACENO PARA A CÂMERA:
-        Começa após 9 segundos e se repete
-        aproximadamente a cada 11,5 segundos.
-      */
+      /* ACENO PERIÓDICO */
 
       if (!waving && time>=nextWave) {
         waving = true;
@@ -1181,12 +1192,7 @@ async function createSkinViewer(canvasId) {
         const elapsed = (time-waveStart)/1000;
         const duration = 2.5;
         const progress = clamp(elapsed/duration,0,1);
-
         const strength = Math.sin(progress*Math.PI);
-
-        /*
-          Braço esquerdo sobe para o cumprimento.
-        */
 
         skin.leftArm.rotation.set(
           lerp(0.12,-2.5,strength),
@@ -1201,23 +1207,12 @@ async function createSkinViewer(canvasId) {
           nextWave = time+9000;
         }
       } else {
-        skin.leftArm.rotation.set(
-          0.12,
-          0,
-          0.12
-        );
+        skin.leftArm.rotation.set(0.12,0,0.12);
       }
 
-      /*
-        BRAÇO DIREITO:
-        Permanece na posição de segurar o celular.
-      */
+      /* BRAÇO DIREITO NA POSIÇÃO DO CELULAR */
 
-      skin.rightArm.rotation.set(
-        -1.0,
-        0,
-        -0.45
-      );
+      skin.rightArm.rotation.set(-1.0,0,-0.45);
 
       skin.head.rotation.set(
         headX,
@@ -1225,10 +1220,7 @@ async function createSkinViewer(canvasId) {
         headZ
       );
 
-      /*
-        PEQUENO MOVIMENTO DO CORPO
-        SEM TIRAR O PERSONAGEM DO LUGAR.
-      */
+      /* PEQUENO MOVIMENTO NO LUGAR */
 
       player.position.x = Math.sin(t*0.55)*0.025;
       player.position.y = Math.sin(t*2.1)*0.018;
