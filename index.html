@@ -1,89 +1,119 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TredHost</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#09070f;color:#fff;
- font-family:Arial,sans-serif;
-}
-header{
- padding:25px 8%;border-bottom:1px solid #30213f;
- display:flex;justify-content:space-between;
-}
+body{margin:0;background:#09070f;color:#fff;font-family:Arial,sans-serif}
+header{padding:24px 8%;border-bottom:1px solid #30213f;display:flex;justify-content:space-between}
 .logo{font-size:25px;font-weight:bold;letter-spacing:3px}
 .logo span,h1 span{color:#a45cff}
-nav a{color:#ddd;text-decoration:none;margin-left:20px}
-main{max-width:1050px;margin:auto;padding:75px 25px}
-.hero{padding:65px 0}
-.tag{color:#b77aff;letter-spacing:4px;font-size:12px}
+button,.btn{background:#873fe0;color:white;border:0;padding:14px 22px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none}
+main{max-width:1050px;margin:auto;padding:70px 24px}
 h1{font-size:clamp(42px,7vw,75px);max-width:750px;line-height:1.05}
 p{color:#aaa0b8;line-height:1.7}
-.btn{
- display:inline-block;background:#873fe0;color:white;
- padding:15px 25px;border-radius:8px;
- text-decoration:none;font-weight:bold;margin-top:15px;
-}
-h2{margin-top:65px}
+.tag{color:#b77aff;letter-spacing:4px;font-size:12px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{
- background:#17111f;border:1px solid #392448;
- padding:25px;border-radius:12px;
-}
-.card p{font-size:14px}
-.price{font-size:42px;font-weight:bold}
+.card{background:#17111f;border:1px solid #392448;padding:25px;border-radius:12px}
+section{margin-top:65px}
+.price{font-size:40px;font-weight:bold}
+#auth{display:none;position:fixed;inset:0;background:#000c;align-items:center;justify-content:center;padding:20px}
+.modal{background:#17111f;border:1px solid #70419a;padding:28px;border-radius:15px;width:100%;max-width:390px}
+input{width:100%;padding:14px;margin:8px 0;background:#09070f;border:1px solid #49345b;border-radius:8px;color:white}
+.modal button{width:100%;margin-top:10px}
+.link{color:#c69bff;cursor:pointer;font-size:14px}
+#message{font-size:13px;min-height:20px}
 footer{text-align:center;padding:35px;color:#756b80}
-@media(max-width:650px){
- .cards{grid-template-columns:1fr}
- header{flex-direction:column;gap:15px}
- nav a{margin:0 15px 0 0}
-}
+@media(max-width:650px){.cards{grid-template-columns:1fr}header{align-items:center}}
 </style>
 </head>
 <body>
 <header>
- <div class="logo">TRED<span>HOST</span></div>
- <nav>
-  <a href="#conteudos">Conteúdos</a>
-  <a href="#assinatura">Assinatura</a>
- </nav>
+<div class="logo">TRED<span>HOST</span></div>
+<button onclick="openAuth()">Entrar / Cadastrar</button>
 </header>
 <main>
- <section class="hero">
-  <div class="tag">ENTRE EM OUTRA DIMENSÃO</div>
-  <h1>O Minecraft além do <span>que você conhece.</span></h1>
-  <p>Entre para o TredHost e tenha acesso a vídeos exclusivos, bastidores dos projetos e conteúdos especiais.</p>
-  <a class="btn" href="#assinatura">Conhecer a assinatura</a>
- </section>
- <section id="conteudos">
-  <h2>Conteúdo exclusivo</h2>
-  <div class="cards">
-   <div class="card">
-    <h3>Vídeos exclusivos</h3>
-    <p>Conteúdos especiais de Minecraft para membros.</p>
-   </div>
-   <div class="card">
-    <h3>Bastidores</h3>
-    <p>Veja como os projetos são planejados e realizados.</p>
-   </div>
-   <div class="card">
-    <h3>Conteúdos especiais</h3>
-    <p>Novidades e materiais exclusivos da comunidade.</p>
-   </div>
-  </div>
- </section>
- <section id="assinatura">
-  <h2>Faça parte do TredHost</h2>
-  <div class="card">
-   <div class="price">R$ 14,90 <small>/mês</small></div>
-   <p>Tenha acesso à área exclusiva de membros.</p>
-   <a class="btn" href="mailto:contato@tredhost.com">Quero ser membro</a>
-  </div>
- </section>
+<div class="tag">ENTRE EM OUTRA DIMENSÃO</div>
+<h1>O Minecraft além do <span>que você conhece.</span></h1>
+<p>Vídeos exclusivos, bastidores dos projetos e conteúdos especiais para quem faz parte da comunidade.</p>
+<button onclick="openAuth()">Acessar minha conta</button>
+
+<section>
+<h2>Conteúdo exclusivo</h2>
+<div class="cards">
+<div class="card"><h3>Vídeos exclusivos</h3><p>Conteúdos especiais de Minecraft para membros.</p></div>
+<div class="card"><h3>Bastidores</h3><p>Veja como os projetos são planejados.</p></div>
+<div class="card"><h3>Conteúdos especiais</h3><p>Novidades exclusivas da comunidade.</p></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Faça parte do TredHost</h2>
+<div class="price">R$ 14,90 <small>/mês</small></div>
+<p>Tenha acesso à futura área exclusiva de membros.</p>
+<button onclick="openAuth()">Criar minha conta</button>
+</section>
 </main>
 <footer>© 2026 TredHost</footer>
+
+<div id="auth">
+<div class="modal">
+<h2 id="formTitle">Entrar no TredHost</h2>
+<input id="email" type="email" placeholder="Seu e-mail">
+<input id="password" type="password" placeholder="Sua senha">
+<button id="submit" onclick="submitAuth()">Entrar</button>
+<p class="link" onclick="toggleMode()" id="toggle">Ainda não tem conta? Cadastre-se</p>
+<p class="link" onclick="resetPassword()">Esqueci minha senha</p>
+<p id="message"></p>
+<p class="link" onclick="closeAuth()">Fechar</p>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://rcoxaqflmdigqltckqdq.supabase.co";
+const SUPABASE_KEY = "COLE_AQUI_SUA_PUBLISHABLE_KEY";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let mode = "login";
+
+function openAuth(){document.getElementById("auth").style.display="flex"}
+function closeAuth(){document.getElementById("auth").style.display="none"}
+function toggleMode(){
+mode=mode==="login"?"signup":"login";
+document.getElementById("formTitle").innerText=mode==="login"?"Entrar no TredHost":"Criar conta";
+document.getElementById("submit").innerText=mode==="login"?"Entrar":"Cadastrar";
+document.getElementById("toggle").innerText=mode==="login"?"Ainda não tem conta? Cadastre-se":"Já tem conta? Entrar";
+document.getElementById("message").innerText="";
+}
+async function submitAuth(){
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
+const msg=document.getElementById("message");
+msg.innerText="Aguarde...";
+let result;
+if(mode==="signup"){
+result=await db.auth.signUp({email,password});
+}else{
+result=await db.auth.signInWithPassword({email,password});
+}
+if(result.error){msg.innerText=result.error.message;return}
+msg.innerText=mode==="signup"?"Cadastro realizado! Confira seu e-mail para confirmar a conta.":"Login realizado com sucesso!";
+if(mode==="login"){
+document.getElementById("formTitle").innerText="Bem-vindo ao TredHost!";
+document.getElementById("submit").style.display="none";
+}
+}
+async function resetPassword(){
+const email=document.getElementById("email").value.trim();
+const msg=document.getElementById("message");
+if(!email){msg.innerText="Digite seu e-mail primeiro.";return}
+const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:"https://tredhost-theta.vercel.app"});
+msg.innerText=error?error.message:"Enviamos um link de recuperação para seu e-mail.";
+}
+</script>
 </body>
 </html>
