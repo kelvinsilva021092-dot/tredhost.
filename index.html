@@ -46,7 +46,7 @@ body:before {
 
 header {
   position:relative;
-  z-index:2;
+  z-index:10;
   padding:20px 7%;
   display:flex;
   justify-content:space-between;
@@ -93,18 +93,24 @@ main {
   padding:45px 22px 65px;
 }
 
+/* BANNER PRINCIPAL */
+
 .hero {
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:25px;
   padding:40px 5%;
+  padding-right:260px;
   min-height:480px;
   border:1px solid #38234d;
   border-radius:22px;
   background:linear-gradient(120deg,#1b1029,#0e0a17);
-  overflow:hidden;
+  overflow:visible;
   position:relative;
+  isolation:isolate;
+  z-index:4;
+  margin-bottom:90px;
 }
 
 .hero:before {
@@ -113,15 +119,20 @@ main {
   width:350px;
   height:350px;
   right:5%;
+  top:50%;
+  transform:translateY(-50%);
   background:rgba(147,51,234,.18);
   filter:blur(75px);
   border-radius:50%;
+  z-index:0;
+  pointer-events:none;
 }
 
 .hero-content {
   position:relative;
-  z-index:1;
+  z-index:2;
   max-width:620px;
+  width:100%;
   flex:1;
 }
 
@@ -153,26 +164,29 @@ main {
   max-width:550px;
 }
 
-/* PERSONAGEM */
+/* PERSONAGEM SOBREPOSTO */
 
 .mascot {
-  position:relative;
-  z-index:1;
-  flex:0 0 440px;
-  height:480px;
+  position:absolute;
+  z-index:5;
+  right:-105px;
+  bottom:-105px;
+  width:550px;
+  height:590px;
   display:flex;
   justify-content:center;
   align-items:center;
   isolation:isolate;
+  pointer-events:none;
 }
 
 .mascot-glow {
   position:absolute;
-  width:310px;
-  height:310px;
+  width:350px;
+  height:350px;
   border-radius:50%;
-  background:rgba(168,85,247,.25);
-  filter:blur(75px);
+  background:rgba(168,85,247,.28);
+  filter:blur(85px);
   z-index:0;
   animation:glow 4s ease-in-out infinite alternate;
 }
@@ -191,6 +205,8 @@ main {
   align-items:flex-end;
   isolation:isolate;
   z-index:2;
+  transform:scale(1.15);
+  transform-origin:bottom center;
 }
 
 .skin-canvas {
@@ -201,7 +217,9 @@ main {
   bottom:0;
   left:10px;
   display:block;
-  filter:drop-shadow(0 15px 28px rgba(168,85,247,.4));
+  filter:
+    drop-shadow(0 15px 28px rgba(168,85,247,.4))
+    drop-shadow(0 0 15px rgba(168,85,247,.15));
 }
 
 .wood-log {
@@ -237,6 +255,8 @@ main {
 
 .wood-log:before { left:-10px; }
 .wood-log:after { right:-10px; }
+
+/* BORBOLETA */
 
 .butterfly {
   position:absolute;
@@ -305,6 +325,8 @@ main {
   to { transform:rotateY(-65deg); }
 }
 
+/* PARTÍCULAS */
+
 .particles {
   position:absolute;
   inset:0;
@@ -366,6 +388,8 @@ main {
 }
 
 .panel {
+  position:relative;
+  z-index:1;
   max-width:440px;
   margin:35px auto;
   background:linear-gradient(145deg,#191024,#100b19);
@@ -440,7 +464,12 @@ a:hover { text-decoration:underline; }
 
 .hidden { display:none!important; }
 
-.section-title { margin:45px 0 20px; }
+.section-title {
+  position:relative;
+  z-index:1;
+  margin:45px 0 20px;
+}
+
 .section-title h2 { font-size:27px; }
 
 .muted {
@@ -449,6 +478,8 @@ a:hover { text-decoration:underline; }
 }
 
 .grid {
+  position:relative;
+  z-index:1;
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:17px;
@@ -483,6 +514,8 @@ a:hover { text-decoration:underline; }
 .video p { font-size:13px; }
 
 .account {
+  position:relative;
+  z-index:1;
   margin-top:35px;
   padding:14px;
   border:1px solid #38234d;
@@ -503,32 +536,44 @@ footer {
   font-size:12px;
 }
 
-@media(max-width:850px) {
+/* TELAS MÉDIAS */
+
+@media(max-width:1000px) and (min-width:701px) {
   .hero {
-    gap:0;
-    padding-left:4%;
-    padding-right:4%;
+    padding-right:210px;
   }
 
   .mascot {
-    flex:0 0 380px;
+    right:-125px;
+    width:480px;
+    transform:scale(.88);
+    transform-origin:bottom right;
   }
 
-  .mascot-scene {
-    transform:scale(.88);
-    transform-origin:center center;
+  .hero-content {
+    max-width:550px;
+  }
+
+  .hero h1 {
+    font-size:43px;
   }
 }
 
+/* CELULAR */
+
 @media(max-width:700px) {
   header { padding:18px 5%; }
+
   main { padding:25px 14px 50px; }
 
   .hero {
     flex-direction:column;
     text-align:center;
-    padding:32px 15px 10px;
+    padding:32px 15px 0;
+    padding-right:15px;
     gap:10px;
+    min-height:650px;
+    margin-bottom:55px;
   }
 
   .hero-content {
@@ -547,17 +592,23 @@ footer {
   }
 
   .mascot {
-    flex:auto;
-    height:410px;
+    position:relative;
+    right:auto;
+    bottom:auto;
     width:100%;
+    height:390px;
+    margin-top:0;
+    flex:none;
+    transform:none;
   }
 
   .mascot-scene {
-    transform:scale(.92);
+    transform:scale(.88);
     transform-origin:bottom center;
   }
 
   .grid { grid-template-columns:1fr; }
+
   .panel { padding:23px 18px; }
 }
 
@@ -884,7 +935,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- PERSONAGEM 3D COM ANIMAÇÃO PROCEDURAL -->
+<!-- PERSONAGEM 3D COM ANIMAÇÃO -->
 
 <script type="module">
 import * as skinview3d from
@@ -982,7 +1033,6 @@ async function createSkinViewer(canvasId) {
 
     initialPose();
 
-    // Ações espontâneas.
     let action = null;
     let actionStart = 0;
     let nextAction = performance.now()+2500;
@@ -1023,7 +1073,6 @@ async function createSkinViewer(canvasId) {
 
       const t = time/1000;
 
-      // Movimento suave da rolagem.
       scrollProgress +=
         (scrollTarget-scrollProgress) *
         (1-Math.pow(0.0005,delta));
@@ -1034,7 +1083,6 @@ async function createSkinViewer(canvasId) {
       const walking = smooth(0.58,0.88,p);
       const idle = 1-walking;
 
-      // Respiração.
       const breathing = Math.sin(t*2.1);
       const bodyBreathing = breathing*0.025;
 
@@ -1042,7 +1090,6 @@ async function createSkinViewer(canvasId) {
       const headSway = Math.sin(t*0.9)*0.07;
       const headNod = Math.sin(t*1.6)*0.025;
 
-      // Pernas.
       const sittingAngle = -1.05*(1-standing);
       const walkingCycle = t*7.5;
       const step = Math.sin(walkingCycle)*0.48*walking;
@@ -1062,7 +1109,6 @@ async function createSkinViewer(canvasId) {
         0.22*(1-standing)
       );
 
-      // Corpo acompanha os passos.
       const walkBounce =
         Math.abs(Math.sin(walkingCycle))*0.055*walking;
 
@@ -1074,18 +1120,16 @@ async function createSkinViewer(canvasId) {
         Math.sin(t*0.55)*0.07 +
         walking*0.9;
 
-      skin.body.rotation.x =
+      let bodyX =
         bodyBreathing +
         Math.sin(walkingCycle)*0.055*walking;
 
-      skin.body.rotation.z =
+      let bodyZ =
         bodySway*idle +
         Math.sin(walkingCycle)*0.035*walking;
 
-      skin.body.rotation.y =
-        Math.sin(t*0.7)*0.025;
+      let bodyY = Math.sin(t*0.7)*0.025;
 
-      // Cabeça.
       let headY =
         Math.sin(t*0.55)*0.12 +
         headSway;
@@ -1097,7 +1141,6 @@ async function createSkinViewer(canvasId) {
       let headZ =
         Math.sin(t*0.65)*0.035;
 
-      // Braços.
       let rightX =
         -0.12 +
         Math.sin(walkingCycle)*0.42*walking;
@@ -1109,7 +1152,6 @@ async function createSkinViewer(canvasId) {
       let rightZ = -0.08;
       let leftZ = 0.08;
 
-      // Escolhe gestos em intervalos variados.
       if (!action && time>=nextAction && p<0.65) {
         chooseAction(time);
       }
@@ -1118,7 +1160,6 @@ async function createSkinViewer(canvasId) {
 
       if (action) {
         const elapsed = (time-actionStart)/1000;
-
         const progress =
           clamp(elapsed/action.duration,0,1);
 
@@ -1153,7 +1194,6 @@ async function createSkinViewer(canvasId) {
           rightX = lerp(rightX,-2.5,a);
           rightZ =
             lerp(rightZ,-0.35+Math.sin(t*10)*0.5,a);
-
           headY += 0.12*a;
         }
 
@@ -1167,14 +1207,15 @@ async function createSkinViewer(canvasId) {
         if (action.name==="stretch") {
           rightX = lerp(rightX,-1.15,a);
           leftX = lerp(leftX,-1.15,a);
-
           rightZ = lerp(rightZ,-0.45,a);
           leftZ = lerp(leftZ,0.45,a);
 
-          skin.body.rotation.x -= 0.12*a;
+          bodyX -= 0.12*a;
           headX -= 0.08*a;
         }
       }
+
+      skin.body.rotation.set(bodyX,bodyY,bodyZ);
 
       skin.head.rotation.set(
         headX,
