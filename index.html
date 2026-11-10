@@ -153,21 +153,12 @@ main {
 .mascot {
   position:relative;
   z-index:1;
-  flex:0 0 270px;
-  height:310px;
+  flex:0 0 300px;
+  height:320px;
   display:flex;
   justify-content:center;
   align-items:center;
   isolation:isolate;
-}
-
-.skin-canvas {
-  position:relative;
-  z-index:2;
-  width:270px;
-  height:310px;
-  display:block;
-  filter:drop-shadow(0 12px 25px rgba(168,85,247,.35));
 }
 
 .mascot-glow {
@@ -184,6 +175,128 @@ main {
 @keyframes glow {
   from { transform:scale(.85); opacity:.5; }
   to { transform:scale(1.2); opacity:1; }
+}
+
+.mascot-scene {
+  position:relative;
+  width:300px;
+  height:320px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  isolation:isolate;
+  z-index:2;
+}
+
+.skin-canvas {
+  position:absolute;
+  z-index:3;
+  width:270px;
+  height:310px;
+  bottom:0;
+  left:15px;
+  display:block;
+  filter:drop-shadow(0 12px 22px rgba(168,85,247,.30));
+}
+
+.wood-log {
+  position:absolute;
+  z-index:1;
+  width:190px;
+  height:37px;
+  bottom:45px;
+  left:55px;
+  border-radius:9px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 7px,
+      rgba(50,20,8,.35) 8px 10px
+    ),
+    linear-gradient(90deg,#59351f,#98603a,#59351f);
+  border:3px solid #3c2419;
+  box-shadow:0 12px 18px #0008;
+}
+
+.wood-log:before,
+.wood-log:after {
+  content:"";
+  position:absolute;
+  top:4px;
+  width:25px;
+  height:23px;
+  border:3px solid #bd8654;
+  border-radius:50%;
+  background:#704329;
+}
+
+.wood-log:before { left:-10px; }
+.wood-log:after { right:-10px; }
+
+.butterfly {
+  position:absolute;
+  z-index:4;
+  left:-30px;
+  top:105px;
+  width:24px;
+  height:20px;
+  animation:butterflyFlight 9s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.butterfly:before,
+.butterfly:after {
+  content:"";
+  position:absolute;
+  width:12px;
+  height:17px;
+  top:0;
+  background:linear-gradient(135deg,#e9d5ff,#a855f7);
+  border:1px solid #f3e8ff;
+  box-shadow:0 0 10px #c084fc;
+}
+
+.butterfly:before {
+  left:0;
+  border-radius:90% 10% 80% 20%;
+  transform-origin:right center;
+  animation:wingLeft .25s ease-in-out infinite alternate;
+}
+
+.butterfly:after {
+  right:0;
+  border-radius:10% 90% 20% 80%;
+  transform-origin:left center;
+  animation:wingRight .25s ease-in-out infinite alternate;
+}
+
+.butterfly-body {
+  position:absolute;
+  z-index:2;
+  width:3px;
+  height:17px;
+  background:#f5eaff;
+  left:11px;
+  top:2px;
+  border-radius:4px;
+}
+
+@keyframes butterflyFlight {
+  0% { left:-10%; top:105px; }
+  25% { left:25%; top:75px; }
+  50% { left:55%; top:115px; }
+  75% { left:80%; top:65px; }
+  100% { left:115%; top:100px; }
+}
+
+@keyframes wingLeft {
+  from { transform:rotateY(0deg); }
+  to { transform:rotateY(65deg); }
+}
+
+@keyframes wingRight {
+  from { transform:rotateY(0deg); }
+  to { transform:rotateY(-65deg); }
 }
 
 .particles {
@@ -408,13 +521,13 @@ footer {
 
   .mascot {
     flex:auto;
-    height:240px;
+    height:280px;
     width:100%;
   }
 
-  .skin-canvas {
-    width:230px;
-    height:240px;
+  .mascot-scene {
+    transform:scale(.85);
+    transform-origin:bottom center;
   }
 
   .grid { grid-template-columns:1fr; }
@@ -423,7 +536,13 @@ footer {
 }
 
 @media(prefers-reduced-motion:reduce) {
-  .particle, .mascot-glow { animation:none; }
+  .particle,
+  .mascot-glow,
+  .butterfly,
+  .butterfly:before,
+  .butterfly:after {
+    animation:none;
+  }
 }
 </style>
 </head>
@@ -465,6 +584,7 @@ footer {
 
     <div class="mascot">
       <div class="mascot-glow"></div>
+
       <div class="particles">
         <i class="particle"></i>
         <i class="particle"></i>
@@ -473,7 +593,16 @@ footer {
         <i class="particle"></i>
         <i class="particle"></i>
       </div>
-      <canvas class="skin-canvas" id="skinHome"></canvas>
+
+      <div class="mascot-scene">
+        <div class="wood-log"></div>
+
+        <div class="butterfly">
+          <span class="butterfly-body"></span>
+        </div>
+
+        <canvas class="skin-canvas" id="skinHome"></canvas>
+      </div>
     </div>
 
   </div>
@@ -525,6 +654,7 @@ footer {
 
     <div class="mascot">
       <div class="mascot-glow"></div>
+
       <div class="particles">
         <i class="particle"></i>
         <i class="particle"></i>
@@ -533,7 +663,16 @@ footer {
         <i class="particle"></i>
         <i class="particle"></i>
       </div>
-      <canvas class="skin-canvas" id="skinDashboard"></canvas>
+
+      <div class="mascot-scene">
+        <div class="wood-log"></div>
+
+        <div class="butterfly">
+          <span class="butterfly-body"></span>
+        </div>
+
+        <canvas class="skin-canvas" id="skinDashboard"></canvas>
+      </div>
     </div>
 
   </div>
@@ -722,7 +861,7 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- VISUALIZADOR 3D DA SKIN -->
+<!-- CENA 3D PERSONALIZADA -->
 <script type="module">
 import * as skinview3d from
   "https://cdn.jsdelivr.net/npm/skinview3d@3.4.2/+esm";
@@ -734,12 +873,11 @@ const viewers = [];
 
 async function createSkinViewer(canvasId) {
   const canvas = document.getElementById(canvasId);
-
   if (!canvas) return;
 
   try {
     const viewer = new skinview3d.SkinViewer({
-      canvas: canvas,
+      canvas,
       width: 270,
       height: 310,
       skin: SKIN_URL,
@@ -750,77 +888,158 @@ async function createSkinViewer(canvasId) {
 
     viewers.push(viewer);
 
-    viewer.globalLight.intensity = 3;
-    viewer.cameraLight.intensity = 0.8;
+    viewer.globalLight.intensity = 2.8;
+    viewer.cameraLight.intensity = 0.7;
 
-    viewer.autoRotate = true;
-    viewer.autoRotateSpeed = 0.35;
+    viewer.autoRotate = false;
+    viewer.controls.enableRotate = false;
+    viewer.controls.enableZoom = false;
+    viewer.controls.enablePan = false;
 
-    // Aguarda a textura original ser carregada
     await viewer.loadSkin(SKIN_URL);
 
-    console.log("Skin 3D carregada com sucesso:", canvasId);
+    const player = viewer.playerObject;
+    const skin = player.skin;
 
-    // Animações disponíveis na biblioteca
-    const animations = [
-      skinview3d.IdleAnimation,
-      skinview3d.WaveAnimation,
-      skinview3d.WalkingAnimation,
-      skinview3d.FlyingAnimation
-    ];
+    // Posição de descanso sentado
+    function sitPose() {
+      skin.head.rotation.set(0, 0, 0);
+      skin.body.rotation.set(0, 0, 0);
 
-    let currentAnimation = 0;
+      skin.rightArm.rotation.set(0, 0, -0.08);
+      skin.leftArm.rotation.set(0, 0, 0.08);
 
-    function changeAnimation() {
-      const AnimationClass = animations[currentAnimation];
+      skin.rightLeg.rotation.set(-1.15, 0, 0);
+      skin.leftLeg.rotation.set(-1.15, 0, 0);
 
-      if (typeof AnimationClass !== "function") {
-        console.error(
-          "Animação não encontrada:",
-          AnimationClass
-        );
-        return;
-      }
-
-      // Cria a animação e aplica ao visualizador
-      viewer.animation = new AnimationClass();
-
-      if (viewer.animation) {
-        viewer.animation.speed = 0.8;
-      }
-
-      currentAnimation =
-        (currentAnimation + 1) % animations.length;
+      player.position.y = 0;
     }
 
-    // Inicia com a animação de descanso
-    changeAnimation();
+    // Posição em pé
+    function standPose() {
+      skin.head.rotation.set(0, 0, 0);
+      skin.body.rotation.set(0, 0, 0);
 
-    // Alterna as animações a cada 5 segundos
-    const animationTimer = setInterval(() => {
+      skin.rightArm.rotation.set(0, 0, -0.08);
+      skin.leftArm.rotation.set(0, 0, 0.08);
+
+      skin.rightLeg.rotation.set(0, 0, 0);
+      skin.leftLeg.rotation.set(0, 0, 0);
+
+      player.position.y = 0;
+    }
+
+    sitPose();
+
+    let greeting = false;
+    let greetingStart = 0;
+    let lastGreeting = performance.now();
+    let previousFrame = 0;
+
+    const butterfly = canvas.parentElement.querySelector(".butterfly");
+
+    function animate(time) {
       if (!canvas.isConnected) {
-        clearInterval(animationTimer);
         viewer.dispose();
         return;
       }
 
-      changeAnimation();
+      const t = time / 1000;
 
-    }, 5000);
+      if (!previousFrame) previousFrame = time;
+
+      // Movimento suave de descanso
+      skin.body.rotation.x =
+        Math.sin(t * 1.2) * 0.025;
+
+      // A cabeça acompanha a borboleta
+      const look = Math.sin(t * (Math.PI * 2 / 9));
+
+      skin.head.rotation.y = look * 0.22;
+      skin.head.rotation.x =
+        Math.sin(t * 1.4) * 0.035;
+
+      // Pequenos movimentos dos braços
+      if (!greeting) {
+        skin.rightArm.rotation.z =
+          -0.08 + Math.sin(t * 1.1) * 0.025;
+
+        skin.leftArm.rotation.z =
+          0.08 - Math.sin(t * 1.1) * 0.025;
+      }
+
+      // Cumprimento a cada 20 segundos
+      if (!greeting && time - lastGreeting >= 20000) {
+        greeting = true;
+        greetingStart = time;
+        standPose();
+      }
+
+      if (greeting) {
+        const elapsed = (time - greetingStart) / 1000;
+
+        // Levanta
+        if (elapsed < 0.8) {
+          const p = Math.min(elapsed / 0.8, 1);
+
+          player.position.y = Math.sin(p * Math.PI / 2) * 2;
+
+          skin.rightLeg.rotation.x = -1.15 * (1 - p);
+          skin.leftLeg.rotation.x = -1.15 * (1 - p);
+
+          skin.head.rotation.y = 0;
+        }
+
+        // Acena com a mão
+        else if (elapsed < 3) {
+          const wave = Math.sin((elapsed - 0.8) * 9);
+
+          skin.rightArm.rotation.x = -2.7;
+          skin.rightArm.rotation.z = -0.25 + wave * 0.55;
+
+          skin.leftArm.rotation.x = -0.35;
+          skin.leftArm.rotation.z = 0.15;
+        }
+
+        // Começa a sentar novamente
+        else if (elapsed < 3.8) {
+          const p = Math.min((elapsed - 3) / 0.8, 1);
+
+          skin.rightArm.rotation.x = -2.7 * (1 - p);
+          skin.leftArm.rotation.x = -0.35 * (1 - p);
+
+          skin.rightLeg.rotation.x = -1.15 * p;
+          skin.leftLeg.rotation.x = -1.15 * p;
+
+          player.position.y = 2 * (1 - p);
+        }
+
+        else {
+          greeting = false;
+          lastGreeting = time;
+          sitPose();
+        }
+      }
+
+      previousFrame = time;
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+
+    console.log("Cena 3D carregada:", canvasId);
 
   } catch (error) {
     console.error(
-      "Erro ao carregar o personagem 3D:",
+      "Erro ao carregar personagem:",
       canvasId,
       error
     );
   }
 }
 
-// Personagem da página inicial
 createSkinViewer("skinHome");
-
-// Personagem da área de membros
 createSkinViewer("skinDashboard");
 
 </script>
