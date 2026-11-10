@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,9 +20,7 @@
   --muted:#aaa0b7;
 }
 
-* {
-  box-sizing:border-box;
-}
+* { box-sizing:border-box; }
 
 body {
   margin:0;
@@ -61,9 +60,7 @@ header {
   color:#e9d5ff;
 }
 
-.logo span {
-  color:var(--purple);
-}
+.logo span { color:var(--purple); }
 
 button {
   background:linear-gradient(100deg,#a855f7,#6d28d9);
@@ -145,9 +142,7 @@ main {
   margin:22px 0 15px;
 }
 
-.hero h1 span {
-  color:#c084fc;
-}
+.hero h1 span { color:#c084fc; }
 
 .hero p {
   color:#b8adca;
@@ -158,17 +153,70 @@ main {
 .mascot {
   position:relative;
   z-index:1;
-  flex:0 0 240px;
+  flex:0 0 270px;
+  height:310px;
   display:flex;
   justify-content:center;
   align-items:center;
+  isolation:isolate;
 }
 
-.mascot img {
-  width:230px;
-  height:280px;
-  object-fit:contain;
+.skin-canvas {
+  position:relative;
+  z-index:2;
+  width:270px;
+  height:310px;
+  display:block;
   filter:drop-shadow(0 12px 25px rgba(168,85,247,.35));
+}
+
+.mascot-glow {
+  position:absolute;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:rgba(168,85,247,.22);
+  filter:blur(55px);
+  z-index:0;
+  animation:glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { transform:scale(.85); opacity:.5; }
+  to { transform:scale(1.2); opacity:1; }
+}
+
+.particles {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  overflow:hidden;
+}
+
+.particle {
+  position:absolute;
+  bottom:5%;
+  width:4px;
+  height:4px;
+  background:#d8b4fe;
+  border-radius:50%;
+  box-shadow:0 0 10px #a855f7;
+  opacity:0;
+  animation:particleRise 4s linear infinite;
+}
+
+.particle:nth-child(1) { left:15%; animation-delay:0s; }
+.particle:nth-child(2) { left:30%; animation-delay:1.2s; }
+.particle:nth-child(3) { left:70%; animation-delay:2s; }
+.particle:nth-child(4) { left:85%; animation-delay:.7s; }
+.particle:nth-child(5) { left:50%; animation-delay:2.8s; }
+.particle:nth-child(6) { left:40%; animation-delay:1.8s; }
+
+@keyframes particleRise {
+  0% { transform:translateY(0) scale(.5); opacity:0; }
+  20% { opacity:.9; }
+  100% { transform:translateY(-260px) scale(1.4); opacity:0; }
 }
 
 .price {
@@ -252,9 +300,7 @@ a {
   text-decoration:none;
 }
 
-a:hover {
-  text-decoration:underline;
-}
+a:hover { text-decoration:underline; }
 
 .forgot {
   text-align:center;
@@ -271,17 +317,11 @@ a:hover {
   line-height:1.5;
 }
 
-.hidden {
-  display:none!important;
-}
+.hidden { display:none!important; }
 
-.section-title {
-  margin:45px 0 20px;
-}
+.section-title { margin:45px 0 20px; }
 
-.section-title h2 {
-  font-size:27px;
-}
+.section-title h2 { font-size:27px; }
 
 .muted {
   color:var(--muted);
@@ -320,9 +360,7 @@ a:hover {
   font-size:16px;
 }
 
-.video p {
-  font-size:13px;
-}
+.video p { font-size:13px; }
 
 .account {
   margin-top:35px;
@@ -346,13 +384,9 @@ footer {
 }
 
 @media(max-width:700px) {
-  header {
-    padding:18px 5%;
-  }
+  header { padding:18px 5%; }
 
-  main {
-    padding:25px 14px 50px;
-  }
+  main { padding:25px 14px 50px; }
 
   .hero {
     flex-direction:column;
@@ -374,21 +408,22 @@ footer {
 
   .mascot {
     flex:auto;
-    height:205px;
+    height:240px;
+    width:100%;
   }
 
-  .mascot img {
-    width:180px;
-    height:205px;
+  .skin-canvas {
+    width:230px;
+    height:240px;
   }
 
-  .grid {
-    grid-template-columns:1fr;
-  }
+  .grid { grid-template-columns:1fr; }
 
-  .panel {
-    padding:23px 18px;
-  }
+  .panel { padding:23px 18px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .particle, .mascot-glow { animation:none; }
 }
 </style>
 </head>
@@ -407,7 +442,6 @@ footer {
   <div class="hero">
 
     <div class="hero-content">
-
       <div class="tag">✦ Universo Minecraft</div>
 
       <h1>Seu próximo mundo <span>começa aqui.</span></h1>
@@ -427,74 +461,58 @@ footer {
       <p class="price-note">
         Acesso à área exclusiva mediante assinatura ativa.
       </p>
-
     </div>
 
     <div class="mascot">
-      <img
-        src="https://api.mcskin.me/body/tredzerakkj?size=256"
-        alt="Personagem Minecraft do TredHost"
-        onerror="this.style.display='none'"
-      >
+      <div class="mascot-glow"></div>
+      <div class="particles">
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+      </div>
+      <canvas class="skin-canvas" id="skinHome"></canvas>
     </div>
 
   </div>
 
   <div class="panel">
-
     <h2 id="formTitle">Acesse sua conta</h2>
 
-    <p class="subtitle">
-      Entre para continuar no TredHost
-    </p>
+    <p class="subtitle">Entre para continuar no TredHost</p>
 
-    <input
-      id="email"
-      type="email"
-      placeholder="Seu e-mail"
-      autocomplete="email"
-    >
+    <input id="email" type="email"
+      placeholder="Seu e-mail" autocomplete="email">
 
-    <input
-      id="password"
-      type="password"
-      placeholder="Sua senha"
-      autocomplete="current-password"
-    >
+    <input id="password" type="password"
+      placeholder="Sua senha" autocomplete="current-password">
 
-    <button id="submitBtn" onclick="login()">
-      Entrar
-    </button>
+    <button id="submitBtn" onclick="login()">Entrar</button>
 
     <p class="switch">
       <span id="switchText">Ainda não tem conta?</span>
-      <a
-        href="#"
-        id="switchLink"
-        onclick="switchMode();return false"
-      >Criar conta</a>
+      <a href="#" id="switchLink"
+        onclick="switchMode();return false">Criar conta</a>
     </p>
 
     <p class="forgot">
-      <a
-        href="#"
-        onclick="resetPassword();return false"
-      >Esqueci minha senha</a>
+      <a href="#" onclick="resetPassword();return false">
+        Esqueci minha senha
+      </a>
     </p>
 
     <div id="message" aria-live="polite"></div>
-
   </div>
 
 </section>
-
 
 <section id="dashboard" class="hidden">
 
   <div class="hero">
 
     <div class="hero-content">
-
       <div class="tag">✦ Área de membros</div>
 
       <h1>Bem-vindo ao <span>TredHost.</span></h1>
@@ -503,14 +521,19 @@ footer {
         Seu espaço exclusivo para acompanhar projetos,
         vídeos especiais e novidades do universo Minecraft.
       </p>
-
     </div>
 
     <div class="mascot">
-      <img
-        src="https://api.mcskin.me/body/tredzerakkj?size=256"
-        alt="Personagem Minecraft do TredHost"
-      >
+      <div class="mascot-glow"></div>
+      <div class="particles">
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+        <i class="particle"></i>
+      </div>
+      <canvas class="skin-canvas" id="skinDashboard"></canvas>
     </div>
 
   </div>
@@ -527,25 +550,19 @@ footer {
     <div class="video">
       <div class="symbol">🎬</div>
       <h3>Vídeos exclusivos</h3>
-      <p class="muted">
-        Projetos completos e conteúdos especiais.
-      </p>
+      <p class="muted">Projetos completos e conteúdos especiais.</p>
     </div>
 
     <div class="video">
       <div class="symbol">🌌</div>
       <h3>Bastidores</h3>
-      <p class="muted">
-        Veja como os projetos são criados.
-      </p>
+      <p class="muted">Veja como os projetos são criados.</p>
     </div>
 
     <div class="video">
       <div class="symbol">⛏️</div>
       <h3>Projetos especiais</h3>
-      <p class="muted">
-        Mundos, construções e novidades.
-      </p>
+      <p class="muted">Mundos, construções e novidades.</p>
     </div>
 
   </div>
@@ -562,7 +579,6 @@ footer {
   TREDHOST © 2026 · Feito para a comunidade Minecraft
 </footer>
 
-
 <script>
 const SUPABASE_URL =
 "https://rcoxaqflmdigqltckqdq.supabase.co";
@@ -577,52 +593,36 @@ const db = supabase.createClient(
 
 let mode = "login";
 
-
 function message(text) {
   document.getElementById("message").textContent = text;
 }
 
-
 function switchMode() {
-
   mode = mode === "login" ? "signup" : "login";
 
   document.getElementById("formTitle").textContent =
-    mode === "login"
-    ? "Acesse sua conta"
-    : "Crie sua conta";
+    mode === "login" ? "Acesse sua conta" : "Crie sua conta";
 
   document.getElementById("submitBtn").textContent =
-    mode === "login"
-    ? "Entrar"
-    : "Criar conta";
+    mode === "login" ? "Entrar" : "Criar conta";
 
   document.getElementById("switchText").textContent =
     mode === "login"
-    ? "Ainda não tem conta?"
-    : "Já possui uma conta?";
+      ? "Ainda não tem conta?"
+      : "Já possui uma conta?";
 
   document.getElementById("switchLink").textContent =
-    mode === "login"
-    ? "Criar conta"
-    : "Fazer login";
+    mode === "login" ? "Criar conta" : "Fazer login";
 
   document.getElementById("password").autocomplete =
-    mode === "login"
-    ? "current-password"
-    : "new-password";
+    mode === "login" ? "current-password" : "new-password";
 
   message("");
 }
 
-
 async function login() {
-
-  const email =
-    document.getElementById("email").value.trim();
-
-  const password =
-    document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
   if (!email || !password) {
     message("Preencha seu e-mail e sua senha.");
@@ -630,32 +630,26 @@ async function login() {
   }
 
   const btn = document.getElementById("submitBtn");
-
   btn.disabled = true;
   message("Aguarde...");
 
   try {
-
     if (mode === "login") {
-
-      const { error } =
-        await db.auth.signInWithPassword({
-          email,
-          password
-        });
+      const { error } = await db.auth.signInWithPassword({
+        email,
+        password
+      });
 
       if (error) throw error;
 
     } else {
-
-      const { data, error } =
-        await db.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin
-          }
-        });
+      const { data, error } = await db.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin
+        }
+      });
 
       if (error) throw error;
 
@@ -665,93 +659,138 @@ async function login() {
         );
         return;
       }
-
     }
 
   } catch (error) {
-
     message(error.message || "Não foi possível concluir.");
-
   } finally {
-
     btn.disabled = false;
-
   }
 }
 
-
 async function resetPassword() {
-
-  const email =
-    document.getElementById("email").value.trim();
+  const email = document.getElementById("email").value.trim();
 
   if (!email) {
     message("Digite seu e-mail primeiro.");
     return;
   }
 
-  const { error } =
-    await db.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin
-    });
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  });
 
   message(
     error
-    ? "Erro: " + error.message
-    : "Confira seu e-mail para redefinir a senha."
+      ? "Erro: " + error.message
+      : "Confira seu e-mail para redefinir a senha."
   );
 }
 
-
 function showDashboard(user) {
-
-  document.getElementById("home")
-    .classList.add("hidden");
-
-  document.getElementById("dashboard")
-    .classList.remove("hidden");
-
-  document.getElementById("logout")
-    .classList.remove("hidden");
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("logout").classList.remove("hidden");
 
   document.getElementById("userEmail").textContent =
     user.email || "Conta conectada";
-
 }
-
 
 function showHome() {
-
-  document.getElementById("dashboard")
-    .classList.add("hidden");
-
-  document.getElementById("home")
-    .classList.remove("hidden");
-
-  document.getElementById("logout")
-    .classList.add("hidden");
-
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+  document.getElementById("logout").classList.add("hidden");
 }
-
 
 async function logout() {
+  const { error } = await db.auth.signOut();
 
-  await db.auth.signOut();
+  if (error) {
+    message("Não foi possível sair: " + error.message);
+    return;
+  }
 
   showHome();
-
 }
 
-
 db.auth.onAuthStateChange((event, session) => {
-
   if (session?.user) {
     showDashboard(session.user);
   } else {
     showHome();
   }
-
 });
+</script>
+
+<!-- Visualizador 3D da skin original -->
+<script type="module">
+import * as skinview3d from
+  "https://cdn.jsdelivr.net/npm/skinview3d@3.0.0/+esm";
+
+const SKIN_URL =
+  "https://api.mcskin.me/skin/tredzerakkj";
+
+const viewers = [];
+
+function createSkinViewer(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+
+  try {
+    const viewer = new skinview3d.SkinViewer({
+      canvas,
+      width: 270,
+      height: 310,
+      skin: SKIN_URL,
+      background: null,
+      model: "auto-detect",
+      zoom: 0.85,
+      fov: 35
+    });
+
+    viewer.autoRotate = true;
+    viewer.autoRotateSpeed = 0.5;
+
+    viewer.globalLight.intensity = 2.5;
+    viewer.cameraLight.intensity = 0.8;
+
+    const animations = [
+      () => new skinview3d.IdleAnimation(),
+      () => new skinview3d.WaveAnimation(),
+      () => new skinview3d.WalkingAnimation(),
+      () => new skinview3d.FlyingAnimation()
+    ];
+
+    let currentAnimation = 0;
+
+    viewer.animation = animations[0]();
+
+    const animationTimer = setInterval(() => {
+      if (!document.body.contains(canvas)) {
+        clearInterval(animationTimer);
+        viewer.dispose();
+        return;
+      }
+
+      currentAnimation =
+        (currentAnimation + 1) % animations.length;
+
+      viewer.animation = animations[currentAnimation]();
+      viewer.animation.speed = 0.8;
+
+    }, 5000);
+
+    viewers.push(viewer);
+
+    return viewer;
+
+  } catch (error) {
+    console.error("Erro ao carregar a skin 3D:", error);
+  }
+}
+
+createSkinViewer("skinHome");
+createSkinViewer("skinDashboard");
 
 </script>
 
