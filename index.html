@@ -722,74 +722,105 @@ db.auth.onAuthStateChange((event, session) => {
 });
 </script>
 
-<!-- Visualizador 3D da skin original -->
+<!-- VISUALIZADOR 3D DA SKIN -->
 <script type="module">
 import * as skinview3d from
-  "https://cdn.jsdelivr.net/npm/skinview3d@3.0.0/+esm";
+  "https://cdn.jsdelivr.net/npm/skinview3d@3.4.2/+esm";
 
 const SKIN_URL =
   "https://api.mcskin.me/skin/tredzerakkj";
 
 const viewers = [];
 
-function createSkinViewer(canvasId) {
+async function createSkinViewer(canvasId) {
   const canvas = document.getElementById(canvasId);
+
   if (!canvas) return;
 
   try {
     const viewer = new skinview3d.SkinViewer({
-      canvas,
+      canvas: canvas,
       width: 270,
       height: 310,
       skin: SKIN_URL,
       background: null,
-      model: "auto-detect",
-      zoom: 0.85,
-      fov: 35
+      fov: 35,
+      zoom: 0.85
     });
 
-    viewer.autoRotate = true;
-    viewer.autoRotateSpeed = 0.5;
+    viewers.push(viewer);
 
-    viewer.globalLight.intensity = 2.5;
+    viewer.globalLight.intensity = 3;
     viewer.cameraLight.intensity = 0.8;
 
+    viewer.autoRotate = true;
+    viewer.autoRotateSpeed = 0.35;
+
+    // Aguarda a textura original ser carregada
+    await viewer.loadSkin(SKIN_URL);
+
+    console.log("Skin 3D carregada com sucesso:", canvasId);
+
+    // Animações disponíveis na biblioteca
     const animations = [
-      () => new skinview3d.IdleAnimation(),
-      () => new skinview3d.WaveAnimation(),
-      () => new skinview3d.WalkingAnimation(),
-      () => new skinview3d.FlyingAnimation()
+      skinview3d.IdleAnimation,
+      skinview3d.WaveAnimation,
+      skinview3d.WalkingAnimation,
+      skinview3d.FlyingAnimation
     ];
 
     let currentAnimation = 0;
 
-    viewer.animation = animations[0]();
+    function changeAnimation() {
+      const AnimationClass = animations[currentAnimation];
 
+      if (typeof AnimationClass !== "function") {
+        console.error(
+          "Animação não encontrada:",
+          AnimationClass
+        );
+        return;
+      }
+
+      // Cria a animação e aplica ao visualizador
+      viewer.animation = new AnimationClass();
+
+      if (viewer.animation) {
+        viewer.animation.speed = 0.8;
+      }
+
+      currentAnimation =
+        (currentAnimation + 1) % animations.length;
+    }
+
+    // Inicia com a animação de descanso
+    changeAnimation();
+
+    // Alterna as animações a cada 5 segundos
     const animationTimer = setInterval(() => {
-      if (!document.body.contains(canvas)) {
+      if (!canvas.isConnected) {
         clearInterval(animationTimer);
         viewer.dispose();
         return;
       }
 
-      currentAnimation =
-        (currentAnimation + 1) % animations.length;
-
-      viewer.animation = animations[currentAnimation]();
-      viewer.animation.speed = 0.8;
+      changeAnimation();
 
     }, 5000);
 
-    viewers.push(viewer);
-
-    return viewer;
-
   } catch (error) {
-    console.error("Erro ao carregar a skin 3D:", error);
+    console.error(
+      "Erro ao carregar o personagem 3D:",
+      canvasId,
+      error
+    );
   }
 }
 
+// Personagem da página inicial
 createSkinViewer("skinHome");
+
+// Personagem da área de membros
 createSkinViewer("skinDashboard");
 
 </script>
