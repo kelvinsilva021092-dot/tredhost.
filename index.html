@@ -170,7 +170,7 @@ main {
   max-width:550px;
 }
 
-/* PERSONAGEM 3D NO CANTO DO BANNER */
+/* PERSONAGEM 3D */
 
 .mascot {
   position:absolute;
@@ -199,14 +199,8 @@ main {
 }
 
 @keyframes glow {
-  from {
-    transform:scale(.85);
-    opacity:.5;
-  }
-  to {
-    transform:scale(1.15);
-    opacity:1;
-  }
+  from { transform:scale(.85); opacity:.5; }
+  to { transform:scale(1.15); opacity:1; }
 }
 
 .mascot-scene {
@@ -219,8 +213,6 @@ main {
   isolation:isolate;
   z-index:2;
 }
-
-/* TRONCO DE MADEIRA */
 
 .log-seat {
   position:absolute;
@@ -263,8 +255,6 @@ main {
     );
   box-shadow:inset 0 0 12px rgba(0,0,0,.35);
 }
-
-/* CANVAS DO PERSONAGEM */
 
 .skin-canvas {
   position:absolute;
@@ -378,15 +368,9 @@ main {
 .particle:nth-child(6) { left:40%; animation-delay:1.8s; }
 
 @keyframes particleRise {
-  0% {
-    transform:translateY(0) scale(.5);
-    opacity:0;
-  }
+  0% { transform:translateY(0) scale(.5); opacity:0; }
   20% { opacity:.9; }
-  100% {
-    transform:translateY(-350px) scale(1.4);
-    opacity:0;
-  }
+  100% { transform:translateY(-350px) scale(1.4); opacity:0; }
 }
 
 /* PREÇO */
@@ -703,11 +687,9 @@ footer {
 
       <div class="mascot-scene">
         <div class="log-seat"></div>
-
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
-
         <canvas class="skin-canvas" id="skinHome"></canvas>
       </div>
     </div>
@@ -772,11 +754,9 @@ footer {
 
       <div class="mascot-scene">
         <div class="log-seat"></div>
-
         <div class="butterfly">
           <span class="butterfly-body"></span>
         </div>
-
         <canvas class="skin-canvas" id="skinDashboard"></canvas>
       </div>
     </div>
@@ -837,6 +817,7 @@ const db = supabase.createClient(
 );
 
 let mode = "login";
+let subscriptionCheckVersion = 0;
 
 function message(text) {
   document.getElementById("message").textContent = text;
@@ -932,15 +913,63 @@ async function resetPassword() {
   );
 }
 
-function showDashboard(user) {
+/* VERIFICA A ASSINATURA ANTES DE LIBERAR O PAINEL */
+
+async function showDashboard(user, accessToken) {
+  const checkVersion = ++subscriptionCheckVersion;
+
   document.getElementById("home").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  document.getElementById("logout").classList.remove("hidden");
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("logout").classList.add("hidden");
 
-  document.getElementById("userEmail").textContent =
-    user.email || "Conta conectada";
+  message("Verificando sua assinatura...");
 
-  window.scrollTo({ top:0, behavior:"smooth" });
+  try {
+    const response = await fetch("/api/check-subscription", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    const result = await response.json();
+
+    if (checkVersion !== subscriptionCheckVersion) return;
+
+    if (!response.ok) {
+      showHome();
+      message(
+        result.error ||
+        "Não foi possível verificar sua assinatura."
+      );
+      return;
+    }
+
+    if (!result.active) {
+      showHome();
+      message(
+        "Sua assinatura ainda não está ativa. Assine para liberar o acesso."
+      );
+      return;
+    }
+
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("logout").classList.remove("hidden");
+
+    document.getElementById("userEmail").textContent =
+      user.email || "Conta conectada";
+
+    window.scrollTo({ top:0, behavior:"smooth" });
+
+  } catch (error) {
+    if (checkVersion !== subscriptionCheckVersion) return;
+
+    showHome();
+    message(
+      "Erro ao verificar sua assinatura. Tente novamente."
+    );
+  }
 }
 
 function showHome() {
@@ -962,8 +991,9 @@ async function logout() {
 
 db.auth.onAuthStateChange((event, session) => {
   if (session?.user) {
-    showDashboard(session.user);
+    showDashboard(session.user, session.access_token);
   } else {
+    subscriptionCheckVersion++;
     showHome();
   }
 });
@@ -1038,15 +1068,6 @@ async function createSkinViewer(canvasId) {
       const t = time/1000;
       const cycle = (time%18000)/1000;
 
-      /*
-        CICLO DA ANIMAÇÃO:
-        0–7 segundos: sentado
-        7–8 segundos: levantando
-        8–10 segundos: acenando
-        10–11 segundos: sentando
-        11–18 segundos: sentado novamente
-      */
-
       const standUp = smooth(7,8,cycle);
       const sitDown = smooth(10,11,cycle);
 
@@ -1062,8 +1083,6 @@ async function createSkinViewer(canvasId) {
 
       const seated = 1-standing;
 
-      /* PERNAS */
-
       const seatedLeg = -1.05;
 
       skin.rightLeg.rotation.set(
@@ -1078,8 +1097,6 @@ async function createSkinViewer(canvasId) {
         lerp(0.12,0,standing)
       );
 
-      /* CORPO */
-
       const breathing = Math.sin(t*2.1)*0.018;
 
       skin.body.rotation.set(
@@ -1091,8 +1108,6 @@ async function createSkinViewer(canvasId) {
       player.position.y =
         -0.12*seated +
         Math.sin(t*2.1)*.018;
-
-      /* ACOMPANHA A BORBOLETA */
 
       const butterflyPhase = (t%10)/10;
 
@@ -1106,8 +1121,6 @@ async function createSkinViewer(canvasId) {
       let headY = butterflyLook*butterflyNear;
       let headX = Math.sin(t*.8)*.025;
 
-      /* BRAÇOS */
-
       skin.rightArm.rotation.set(
         lerp(-.1,.12,standing),
         0,
@@ -1116,8 +1129,6 @@ async function createSkinViewer(canvasId) {
 
       let leftArmX = lerp(-.15,.12,standing);
       let leftArmZ = .08;
-
-      /* ACENO */
 
       if (cycle>=8 && cycle<=10) {
         const waveProgress = (cycle-8)/2;
