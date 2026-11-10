@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
       });
     }
 
+    // Valida a sessão do usuário no Supabase
     const userResponse = await fetch(
       `${supabaseUrl}/auth/v1/user`,
       {
@@ -38,12 +39,13 @@ module.exports = async (req, res) => {
     if (!userResponse.ok) {
       return res.status(401).json({
         active: false,
-        error: "Sua sessão expirou. Entre novamente."
+        error: "Sessão inválida. Faça login novamente."
       });
     }
 
     const user = await userResponse.json();
 
+    // Consulta a assinatura usando a chave secreta do servidor
     const subscriptionResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&select=status,mp_preapproval_id`,
       {
@@ -55,7 +57,18 @@ module.exports = async (req, res) => {
     );
 
     if (!subscriptionResponse.ok) {
-      throw new Error("Não foi possível consultar a assinatura.");
+      const errorDetails = await subscriptionResponse.text();
+
+      console.error(
+        "Erro na consulta Supabase:",
+        subscriptionResponse.status,
+        errorDetails
+      );
+
+      return res.status(500).json({
+        active: false,
+        error: "Não foi possível consultar sua assinatura."
+      });
     }
 
     const subscriptions = await subscriptionResponse.json();
