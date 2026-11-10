@@ -17,10 +17,22 @@ module.exports = async (req, res) => {
       return res.status(500).end();
     }
 
-    const signature = req.headers["x-signature"] || "";
-    const requestId = req.headers["x-request-id"] || "";
-    const dataId = req.query["data.id"];
+    const body = req.body || {};
+    const query = req.query || {};
 
+    const dataId = String(
+      query["data.id"] || body.data?.id || ""
+    ).toLowerCase();
+
+    const requestId = req.headers["x-request-id"] || "";
+    const signature = req.headers["x-signature"] || "";
+    const eventType = body.type || query.type || "";
+
+    if (!dataId || !requestId || !signature) {
+      return res.status(400).end();
+    }
+
+    // Validação HMAC do Mercado Pago
     const parts = Object.fromEntries(
       signature.split(",").map(part => {
         const [key, value] = part.trim().split("=");
@@ -31,21 +43,21 @@ module.exports = async (req, res) => {
     const ts = parts.ts;
     const receivedHash = parts.v1;
 
-    if (!ts || !receivedHash || !dataId || !requestId) {
-      return res.status(400).end();
+    if (!ts || !receivedHash) {
+      return res.status(401).end();
     }
 
-    // Valida a assinatura enviada pelo Mercado Pago
     const timestamp = Number(ts);
 
-    if (!Number.isFinite(timestamp) ||
-        Math.abs(Date.now() / 1000 - timestamp) > 300) {
+    if (
+      !Number.isFinite(timestamp) ||
+      Math.abs(Date.now() / 1000 - timestamp) > 300
+    ) {
       return res.status(401).end();
     }
 
     const manifest =
-      `id:${String(dataId).toLowerCase()};` +
-      `request-id:${requestId};ts:${ts};`;
+      `id:${dataId};request-id:${requestId};ts:${ts};`;
 
     const expectedHash = crypto
       .createHmac("sha256", secret)
@@ -62,16 +74,58 @@ module.exports = async (req, res) => {
       return res.status(401).end();
     }
 
-    const eventType = req.body?.type || req.query.type;
+    // Busca os dados diretamente no Mercado Pago
+    let preapprovalId = null;
 
-    // Atualizamos o acesso somente com o estado
-    // confirmado diretamente na API do Mercado Pago.
-    if (eventType !== "subscription_preapproval") {
+    if (eventType === "subscription_preapproval") {
+      preapprovalId = dataId;
+    }
+
+    if (eventType === "subscription_authorized_payment") {
+      const invoiceResponse = await fetch(
+        `https://api.mercadopago.com/authorized_payments/${encodeURIComponent(dataId)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${mpToken}`
+          }
+        }
+      );
+
+      if (!invoiceResponse.ok) {
+        return res.status(502).end();
+      }
+
+      const invoice = await invoiceResponse.json();
+      preapprovalId = invoice.preapproval_id;
+    }
+
+    if (eventType === "payment") {
+      // Confirma que o pagamento existe.
+      // A liberação de acesso será baseada no status
+      // confirmado da assinatura, não apenas neste evento.
+      const paymentResponse = await fetch(
+        `https://api.mercadopago.com/v1/payments/${encodeURIComponent(dataId)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${mpToken}`
+          }
+        }
+      );
+
+      if (!paymentResponse.ok) {
+        return res.status(502).end();
+      }
+
       return res.status(200).json({ received: true });
     }
 
-    const mpResponse = await fetch(
-      `https://api.mercadopago.com/preapproval/${encodeURIComponent(dataId)}`,
+    // Outros eventos são reconhecidos, mas não alteram o acesso.
+    if (!preapprovalId) {
+      return res.status(200).json({ received: true });
+    }
+
+    const subscriptionResponse = await fetch(
+      `https://api.mercadopago.com/preapproval/${encodeURIComponent(preapprovalId)}`,
       {
         headers: {
           Authorization: `Bearer ${mpToken}`
@@ -79,12 +133,11 @@ module.exports = async (req, res) => {
       }
     );
 
-    if (!mpResponse.ok) {
-      console.error("Falha ao consultar assinatura no Mercado Pago");
+    if (!subscriptionResponse.ok) {
       return res.status(502).end();
     }
 
-    const subscription = await mpResponse.json();
+    const subscription = await subscriptionResponse.json();
 
     const userId = subscription.external_reference;
     const status = subscription.status;
@@ -93,7 +146,7 @@ module.exports = async (req, res) => {
       return res.status(400).end();
     }
 
-    // Salva o status confirmado no Supabase
+    // Atualiza a assinatura no Supabase
     const dbResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?on_conflict=user_id`,
       {
@@ -114,7 +167,7 @@ module.exports = async (req, res) => {
     );
 
     if (!dbResponse.ok) {
-      console.error("Falha ao atualizar assinatura no Supabase");
+      console.error("Erro ao atualizar Supabase");
       return res.status(500).end();
     }
 
@@ -125,4 +178,3 @@ module.exports = async (req, res) => {
     return res.status(500).end();
   }
 };
-
