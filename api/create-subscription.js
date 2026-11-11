@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const mpToken = process.env.MP_ACCESS_TOKEN;
+    const environment = process.env.VERCEL_ENV;
 
     if (!supabaseUrl || !supabaseKey || !mpToken) {
       return res.status(500).json({
@@ -17,11 +18,34 @@ module.exports = async (req, res) => {
       });
     }
 
+    // Identifica se está no ambiente de teste ou produção
+    let siteUrl;
+
+    if (environment === "preview") {
+      const branchUrl = process.env.VERCEL_BRANCH_URL;
+
+      if (!branchUrl) {
+        return res.status(500).json({
+          error: "Endereço do ambiente de teste não encontrado."
+        });
+      }
+
+      siteUrl = `https://${branchUrl}`;
+
+    } else if (environment === "production") {
+      siteUrl = "https://tredhost-theta.vercel.app";
+
+    } else {
+      return res.status(500).json({
+        error: "Ambiente do servidor não identificado."
+      });
+    }
+
     const authorization = req.headers.authorization;
 
     if (!authorization || !authorization.startsWith("Bearer ")) {
       return res.status(401).json({
-        error: "Faça login antes de assinar"
+        error: "Faça login antes de assinar."
       });
     }
 
@@ -60,7 +84,7 @@ module.exports = async (req, res) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          reason: "Assinatura mensal TredHost",
+          reason: "Assinatura mensal MEMBROStred",
           external_reference: user.id,
           payer_email: user.email,
           auto_recurring: {
@@ -69,8 +93,7 @@ module.exports = async (req, res) => {
             transaction_amount: 14.90,
             currency_id: "BRL"
           },
-          back_url: "https://tredhost-theta.vercel.app/?assinatura=retorno",
-          notification_url: "https://tredhost-theta.vercel.app/api/mercadopago-webhook"
+          back_url: `${siteUrl}/?assinatura=retorno`
         })
       }
     );
@@ -90,11 +113,10 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro no servidor:", error);
+    console.error("Erro ao criar assinatura:", error);
 
     return res.status(500).json({
       error: "Erro interno ao iniciar assinatura."
     });
   }
 };
-
