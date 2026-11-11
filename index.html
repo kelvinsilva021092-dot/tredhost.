@@ -1,5 +1,5 @@
 
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +21,6 @@
 }
 
 * { box-sizing:border-box; }
-
 html { scroll-behavior:smooth; overflow-x:hidden; }
 
 body {
@@ -62,7 +61,6 @@ header {
   letter-spacing:2px;
   color:#e9d5ff;
 }
-
 .logo span { color:var(--purple); }
 
 button {
@@ -75,7 +73,6 @@ button {
   cursor:pointer;
   transition:.2s;
 }
-
 button:hover { filter:brightness(1.15); transform:translateY(-1px); }
 button:disabled { opacity:.5; cursor:wait; }
 
@@ -147,9 +144,7 @@ main {
   letter-spacing:-2px;
   margin:22px 0 15px;
 }
-
 .hero h1 span { color:#c084fc; }
-
 .hero p { color:#b8adca; line-height:1.7; max-width:550px; }
 
 .mascot {
@@ -293,7 +288,6 @@ main {
   from { transform:rotateY(0deg); }
   to { transform:rotateY(65deg); }
 }
-
 @keyframes wingRight {
   from { transform:rotateY(0deg); }
   to { transform:rotateY(-65deg); }
@@ -337,7 +331,6 @@ main {
   font-size:35px;
   font-weight:900;
 }
-
 .old {
   font-size:17px;
   color:#888;
@@ -345,7 +338,6 @@ main {
   font-weight:500;
   margin-right:8px;
 }
-
 .price small { font-size:14px; color:#aaa0b7; font-weight:500; }
 .price-note { font-size:12px; color:#93889e; }
 
@@ -445,7 +437,7 @@ footer {
   font-size:12px;
 }
 
-/* TELA DE ASSINATURA NÃO ATIVA */
+/* TELA DE ASSINATURA */
 
 #subscriptionPage {
   max-width:760px;
@@ -497,7 +489,6 @@ footer {
   margin:0 0 15px;
   letter-spacing:-1.5px;
 }
-
 .subscription-card h1 span { color:#c084fc; }
 
 .subscription-description {
@@ -525,18 +516,12 @@ footer {
   font-size:16px;
   margin-right:8px;
 }
-
 .subscription-price strong {
   font-size:39px;
   font-weight:900;
   color:#fff;
 }
-
-.subscription-price small {
-  color:#b8adca;
-  font-size:14px;
-}
-
+.subscription-price small { color:#b8adca; font-size:14px; }
 .subscription-price .discount {
   display:block;
   margin-top:7px;
@@ -562,7 +547,6 @@ footer {
   border-radius:9px;
   background:rgba(255,255,255,.025);
 }
-
 .benefit span { color:#c084fc; margin-right:7px; }
 
 .subscribe-button {
@@ -610,8 +594,109 @@ footer {
   color:#d8b4fe;
   padding:11px 16px;
 }
-
 .subscription-actions a { font-size:13px; }
+
+/* NOVO PAINEL DE VÍDEOS */
+
+.admin-panel {
+  position:relative;
+  z-index:2;
+  margin-top:35px;
+  padding:25px;
+  border:1px solid #553477;
+  border-radius:15px;
+  background:linear-gradient(145deg,#191024,#100b19);
+}
+
+.admin-panel h2 { color:#e9d5ff; margin-top:0; }
+.admin-panel label {
+  display:block;
+  margin-top:15px;
+  color:#d8b4fe;
+  font-size:13px;
+}
+
+.admin-panel input,
+.admin-panel textarea {
+  width:100%;
+  padding:14px;
+  margin-top:7px;
+  background:#0b0812;
+  border:1px solid #38264c;
+  border-radius:9px;
+  color:white;
+  font:inherit;
+}
+
+.admin-panel textarea {
+  min-height:90px;
+  resize:vertical;
+}
+
+.admin-panel input[type="file"] { padding:12px; }
+
+#videoStatus {
+  color:#d8b4fe;
+  font-size:13px;
+  line-height:1.5;
+  margin-top:12px;
+  min-height:20px;
+}
+
+.member-video-grid {
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+
+.video-item {
+  overflow:hidden;
+  background:linear-gradient(145deg,#191024,#100b19);
+  border:1px solid #38234d;
+  border-radius:14px;
+  padding:15px;
+  min-width:0;
+}
+
+.video-item video {
+  display:block;
+  width:100%;
+  max-height:380px;
+  border-radius:9px;
+  background:#000;
+  margin-bottom:14px;
+}
+
+.video-item h3 {
+  color:#e9d5ff;
+  margin:8px 0;
+  overflow-wrap:anywhere;
+}
+
+.video-item p {
+  color:#aaa0b7;
+  font-size:13px;
+  line-height:1.5;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.video-item button {
+  margin-top:10px;
+  background:#49205f;
+}
+
+.empty-videos {
+  grid-column:1/-1;
+  padding:25px;
+  text-align:center;
+  color:#aaa0b7;
+  border:1px dashed #553477;
+  border-radius:12px;
+}
 
 @media(max-width:1000px) and (min-width:701px) {
   .hero { padding-right:190px; }
@@ -635,12 +720,13 @@ footer {
   .hero h1 { font-size:36px; letter-spacing:-1px; }
   .hero p { font-size:14px; }
   .mascot { right:-100px; bottom:-45px; width:220px; height:280px; opacity:.8; }
-  .grid { grid-template-columns:1fr; }
+  .grid,.member-video-grid { grid-template-columns:1fr; }
   .panel { padding:23px 18px; z-index:3; }
   .price { font-size:30px; }
   .subscription-card { padding:38px 19px; }
   .benefits { grid-template-columns:1fr; }
   .subscription-price strong { font-size:34px; }
+  .admin-panel { padding:18px; }
 }
 
 @media(max-width:380px) {
@@ -713,13 +799,10 @@ footer {
   </div>
 </section>
 
-<!-- NOVA TELA PARA QUEM NÃO TEM ASSINATURA ATIVA -->
 <section id="subscriptionPage" class="hidden">
   <div class="subscription-card">
     <div class="lock-icon">🔒</div>
-
     <div class="tag">✦ Acesso exclusivo</div>
-
     <h1>Seu acesso ainda <span>não está liberado.</span></h1>
 
     <p class="subscription-description">
@@ -785,27 +868,32 @@ footer {
     </div>
   </div>
 
+  <!-- PAINEL VISÍVEL SOMENTE PARA O ADMINISTRADOR -->
+  <section id="adminPanel" class="admin-panel hidden">
+    <div class="tag">✦ Administração</div>
+    <h2>Adicionar vídeo exclusivo</h2>
+    <p class="muted">Envie um vídeo do seu computador para a área de membros.</p>
+
+    <label for="videoTitle">Título do vídeo</label>
+    <input id="videoTitle" type="text" maxlength="120" placeholder="Ex.: Construindo um novo projeto">
+
+    <label for="videoDescription">Descrição</label>
+    <textarea id="videoDescription" maxlength="1000" placeholder="Escreva uma descrição para os membros..."></textarea>
+
+    <label for="videoFile">Arquivo de vídeo</label>
+    <input id="videoFile" type="file" accept="video/mp4,video/webm">
+
+    <button id="uploadButton" onclick="uploadVideo()">ENVIAR VÍDEO</button>
+    <div id="videoStatus" aria-live="polite"></div>
+  </section>
+
   <div class="section-title">
-    <h2>Sua área exclusiva</h2>
-    <p class="muted">Os espaços estão preparados para receber seus conteúdos.</p>
+    <h2>Vídeos exclusivos</h2>
+    <p class="muted">Assista aos conteúdos diretamente por aqui.</p>
   </div>
 
-  <div class="grid">
-    <div class="video">
-      <div class="symbol">🎬</div>
-      <h3>Vídeos exclusivos</h3>
-      <p class="muted">Projetos completos e conteúdos especiais.</p>
-    </div>
-    <div class="video">
-      <div class="symbol">🌌</div>
-      <h3>Bastidores</h3>
-      <p class="muted">Veja como os projetos são criados.</p>
-    </div>
-    <div class="video">
-      <div class="symbol">⛏️</div>
-      <h3>Projetos especiais</h3>
-      <p class="muted">Mundos, construções e novidades.</p>
-    </div>
+  <div id="memberVideos" class="member-video-grid">
+    <div class="empty-videos">Carregando vídeos...</div>
   </div>
 
   <div class="account">
@@ -825,6 +913,8 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_aKgqpbqlcza4-469muFlhg_Ur7VmJR-";
+
+const ADMIN_ID = "f0aeddd7-dcb7-430f-abc5-ce207b2f07fd";
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -954,7 +1044,7 @@ async function showDashboard(user, accessToken) {
       return;
     }
 
-    showMemberDashboard(user);
+    showMemberDashboard(user, accessToken);
   } catch (error) {
     if (checkVersion !== subscriptionCheckVersion) return;
     showHome();
@@ -976,13 +1066,231 @@ function showSubscriptionPage() {
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
-function showMemberDashboard(user) {
+function showMemberDashboard(user, accessToken) {
   hideAllSections();
   document.getElementById("dashboard").classList.remove("hidden");
   document.getElementById("logout").classList.remove("hidden");
   document.getElementById("userEmail").textContent =
     user.email || "Conta conectada";
+
+  const isAdmin = user.id === ADMIN_ID;
+  document.getElementById("adminPanel").classList.toggle("hidden", !isAdmin);
+
+  loadMemberVideos(accessToken);
   window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+/* CARREGAR VÍDEOS COM AUTORIZAÇÃO DO SERVIDOR */
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+async function loadMemberVideos(accessToken) {
+  const container = document.getElementById("memberVideos");
+  container.innerHTML = '<div class="empty-videos">Carregando vídeos...</div>';
+
+  try {
+    const response = await fetch("/api/member-videos", {
+      method:"GET",
+      headers:{ Authorization:`Bearer ${accessToken}` }
+    });
+
+    const videos = await response.json();
+
+    if (!response.ok) {
+      throw new Error(videos.error || "Não foi possível carregar os vídeos.");
+    }
+
+    container.innerHTML = "";
+
+    if (!Array.isArray(videos) || videos.length === 0) {
+      container.innerHTML = '<div class="empty-videos">Ainda não há vídeos publicados.</div>';
+      return;
+    }
+
+    videos.forEach(video => {
+      const item = document.createElement("article");
+      item.className = "video-item";
+
+      const title = document.createElement("h3");
+      title.textContent = video.title || "Vídeo exclusivo";
+
+      const description = document.createElement("p");
+      description.textContent = video.description || "";
+
+      item.appendChild(title);
+
+      if (video.video_url) {
+        const player = document.createElement("video");
+        player.controls = true;
+        player.preload = "metadata";
+        player.playsInline = true;
+        player.src = video.video_url;
+        item.insertBefore(player, title);
+      } else {
+        const unavailable = document.createElement("p");
+        unavailable.textContent = "Não foi possível carregar este vídeo. Atualize a página e tente novamente.";
+        item.appendChild(unavailable);
+      }
+
+      item.appendChild(description);
+
+      if (currentSession?.user?.id === ADMIN_ID) {
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Excluir vídeo";
+        deleteButton.onclick = () => deleteVideo(video.id);
+        item.appendChild(deleteButton);
+      }
+
+      container.appendChild(item);
+    });
+  } catch (error) {
+    container.innerHTML = "";
+    const messageBox = document.createElement("div");
+    messageBox.className = "empty-videos";
+    messageBox.textContent = error.message || "Erro ao carregar os vídeos.";
+    container.appendChild(messageBox);
+  }
+}
+
+/* ENVIAR VÍDEO AO STORAGE PRIVADO */
+
+async function uploadVideo() {
+  if (!currentSession?.accessToken || currentSession.user.id !== ADMIN_ID) {
+    document.getElementById("videoStatus").textContent =
+      "Apenas o administrador pode enviar vídeos.";
+    return;
+  }
+
+  const titleInput = document.getElementById("videoTitle");
+  const descriptionInput = document.getElementById("videoDescription");
+  const fileInput = document.getElementById("videoFile");
+  const button = document.getElementById("uploadButton");
+  const status = document.getElementById("videoStatus");
+
+  const title = titleInput.value.trim();
+  const description = descriptionInput.value.trim();
+  const file = fileInput.files[0];
+
+  if (!title || !file) {
+    status.textContent = "Informe o título e selecione um vídeo.";
+    return;
+  }
+
+  if (!["video/mp4", "video/webm"].includes(file.type)) {
+    status.textContent = "Envie um arquivo MP4 ou WebM.";
+    return;
+  }
+
+  if (!crypto.randomUUID) {
+    status.textContent = "Seu navegador não oferece suporte ao envio seguro.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "ENVIANDO...";
+  status.textContent = "Enviando o arquivo. Não feche esta página.";
+
+  let storagePath = null;
+
+  try {
+    const safeName = file.name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "-")
+      .slice(-100);
+
+    storagePath = `${ADMIN_ID}/${crypto.randomUUID()}-${safeName}`;
+
+    const { error: uploadError } = await db.storage
+      .from("videos")
+      .upload(storagePath, file, {
+        cacheControl:"300",
+        contentType:file.type,
+        upsert:false
+      });
+
+    if (uploadError) throw uploadError;
+
+    const response = await fetch("/api/admin-videos", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${currentSession.accessToken}`
+      },
+      body:JSON.stringify({
+        title,
+        description,
+        storage_path:storagePath
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      await db.storage.from("videos").remove([storagePath]);
+      storagePath = null;
+      throw new Error(result.error || "O arquivo foi enviado, mas não foi possível registrar o vídeo.");
+    }
+
+    titleInput.value = "";
+    descriptionInput.value = "";
+    fileInput.value = "";
+
+    status.textContent = "Vídeo publicado com sucesso!";
+    await loadMemberVideos(currentSession.accessToken);
+
+  } catch (error) {
+    status.textContent = error.message || "Erro ao enviar o vídeo.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "ENVIAR VÍDEO";
+  }
+}
+
+/* EXCLUIR VÍDEO */
+
+async function deleteVideo(id) {
+  if (!currentSession?.accessToken || currentSession.user.id !== ADMIN_ID) {
+    return;
+  }
+
+  if (!confirm("Tem certeza de que deseja excluir este vídeo?")) {
+    return;
+  }
+
+  const status = document.getElementById("videoStatus");
+  status.textContent = "Excluindo vídeo...";
+
+  try {
+    const response = await fetch("/api/admin-videos", {
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${currentSession.accessToken}`
+      },
+      body:JSON.stringify({ id })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Não foi possível excluir o vídeo.");
+    }
+
+    status.textContent = "Vídeo excluído.";
+    await loadMemberVideos(currentSession.accessToken);
+
+  } catch (error) {
+    status.textContent = error.message || "Erro ao excluir vídeo.";
+  }
 }
 
 /* INICIA A ASSINATURA NO MERCADO PAGO */
@@ -1001,10 +1309,10 @@ async function startSubscription() {
 
   try {
     const response = await fetch("/api/create-subscription", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentSession.accessToken}`
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${currentSession.accessToken}`
       }
     });
 
