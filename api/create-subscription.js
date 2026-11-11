@@ -1,4 +1,3 @@
-
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -12,25 +11,18 @@ module.exports = async (req, res) => {
     const mpToken = process.env.MP_ACCESS_TOKEN;
     const environment = process.env.VERCEL_ENV;
 
-    // Diagnóstico das variáveis
     if (!supabaseUrl || !supabaseKey || !mpToken) {
-      console.error("Diagnóstico de configuração:", {
+      console.error("Configuração incompleta:", {
         supabaseUrl: Boolean(supabaseUrl),
         supabaseKey: Boolean(supabaseKey),
         mpToken: Boolean(mpToken)
       });
 
       return res.status(500).json({
-        error: "Configuração do servidor incompleta",
-        diagnostico: {
-          supabaseUrl: Boolean(supabaseUrl),
-          supabaseKey: Boolean(supabaseKey),
-          mpToken: Boolean(mpToken)
-        }
+        error: "Configuração do servidor incompleta"
       });
     }
 
-    // Identifica o ambiente
     let siteUrl;
 
     if (environment === "preview") {
@@ -53,7 +45,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Verifica o login
     const authorization = req.headers.authorization;
 
     if (!authorization || !authorization.startsWith("Bearer ")) {
@@ -86,7 +77,13 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Cria a assinatura no Mercado Pago
+    // E-mail de teste no Preview.
+    // E-mail real do cliente em Production.
+    const payerEmail =
+      environment === "preview"
+        ? "test@testuser.com"
+        : user.email;
+
     const mpResponse = await fetch(
       "https://api.mercadopago.com/preapproval",
       {
@@ -98,7 +95,7 @@ module.exports = async (req, res) => {
         body: JSON.stringify({
           reason: "Assinatura mensal MEMBROStred",
           external_reference: user.id,
-          payer_email: user.email,
+          payer_email: payerEmail,
           auto_recurring: {
             frequency: 1,
             frequency_type: "months",
@@ -113,7 +110,11 @@ module.exports = async (req, res) => {
     const subscription = await mpResponse.json();
 
     if (!mpResponse.ok) {
-      console.error("Erro Mercado Pago:", subscription);
+      console.error("Erro Mercado Pago:", {
+        status: mpResponse.status,
+        message: subscription.message,
+        cause: subscription.cause
+      });
 
       return res.status(502).json({
         error: "Não foi possível criar a assinatura."
