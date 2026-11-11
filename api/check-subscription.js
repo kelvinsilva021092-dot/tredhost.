@@ -10,15 +10,10 @@ module.exports = async (req, res) => {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    // Diagnóstico das variáveis
     if (!supabaseUrl || !supabaseKey) {
       return res.status(500).json({
         active: false,
-        error: "Configuração do servidor incompleta",
-        diagnostico: {
-          supabaseUrl: Boolean(supabaseUrl),
-          supabaseKey: Boolean(supabaseKey)
-        }
+        error: "Configuração do servidor incompleta"
       });
     }
 
@@ -51,13 +46,13 @@ module.exports = async (req, res) => {
 
     const user = await userResponse.json();
 
-    // Consultar assinatura
+    // Consultar assinatura usando a chave de serviço
     const subscriptionResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&select=status,mp_preapproval_id`,
       {
         headers: {
           apikey: supabaseKey,
-          Authorization: authorization
+          Authorization: `Bearer ${supabaseKey}`
         }
       }
     );
