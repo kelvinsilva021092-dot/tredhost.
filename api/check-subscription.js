@@ -10,15 +10,15 @@ module.exports = async (req, res) => {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+    // Diagnóstico das variáveis
     if (!supabaseUrl || !supabaseKey) {
-      console.error("Configuração incompleta:", {
-        hasUrl: !!supabaseUrl,
-        hasKey: !!supabaseKey
-      });
-
       return res.status(500).json({
         active: false,
-        error: "Configuração do servidor incompleta"
+        error: "Configuração do servidor incompleta",
+        diagnostico: {
+          supabaseUrl: Boolean(supabaseUrl),
+          supabaseKey: Boolean(supabaseKey)
+        }
       });
     }
 
@@ -43,14 +43,6 @@ module.exports = async (req, res) => {
     );
 
     if (!userResponse.ok) {
-      const details = await userResponse.text();
-
-      console.error(
-        "ERRO AO VALIDAR USUÁRIO:",
-        userResponse.status,
-        details
-      );
-
       return res.status(401).json({
         active: false,
         error: "Sessão inválida. Faça login novamente."
@@ -59,7 +51,7 @@ module.exports = async (req, res) => {
 
     const user = await userResponse.json();
 
-    // Consultar assinatura usando a sessão do próprio usuário
+    // Consultar assinatura
     const subscriptionResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&select=status,mp_preapproval_id`,
       {
@@ -71,12 +63,9 @@ module.exports = async (req, res) => {
     );
 
     if (!subscriptionResponse.ok) {
-      const errorDetails = await subscriptionResponse.text();
-
       console.error(
-        "ERRO NA CONSULTA SUPABASE:",
-        subscriptionResponse.status,
-        errorDetails
+        "Erro na consulta Supabase:",
+        subscriptionResponse.status
       );
 
       return res.status(500).json({
@@ -98,7 +87,7 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("ERRO AO VERIFICAR ASSINATURA:", error);
+    console.error("Erro ao verificar assinatura:", error);
 
     return res.status(500).json({
       active: false,
