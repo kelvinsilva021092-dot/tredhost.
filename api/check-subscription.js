@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const adminId = "f0aeddd7-dcb7-430f-abc5-ce207b2f07fd";
 
     if (!supabaseUrl || !supabaseKey) {
       return res.status(500).json({
@@ -19,23 +20,19 @@ module.exports = async (req, res) => {
 
     const authorization = req.headers.authorization;
 
-    if (!authorization || !authorization.startsWith("Bearer ")) {
+    if (!authorization?.startsWith("Bearer ")) {
       return res.status(401).json({
         active: false,
         error: "Faça login para continuar."
       });
     }
 
-    // Validar a sessão do usuário
-    const userResponse = await fetch(
-      `${supabaseUrl}/auth/v1/user`,
-      {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: authorization
-        }
+    const userResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: authorization
       }
-    );
+    });
 
     if (!userResponse.ok) {
       return res.status(401).json({
@@ -46,7 +43,14 @@ module.exports = async (req, res) => {
 
     const user = await userResponse.json();
 
-    // Consultar assinatura usando a chave de serviço
+    // Administrador tem acesso mesmo sem assinatura.
+    if (user.id === adminId) {
+      return res.status(200).json({
+        active: true,
+        status: "admin"
+      });
+    }
+
     const subscriptionResponse = await fetch(
       `${supabaseUrl}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&select=status,mp_preapproval_id`,
       {
@@ -58,10 +62,7 @@ module.exports = async (req, res) => {
     );
 
     if (!subscriptionResponse.ok) {
-      console.error(
-        "Erro na consulta Supabase:",
-        subscriptionResponse.status
-      );
+      console.error("Erro na consulta Supabase:", subscriptionResponse.status);
 
       return res.status(500).json({
         active: false,
