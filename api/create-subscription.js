@@ -1,3 +1,4 @@
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -35,10 +36,8 @@ module.exports = async (req, res) => {
       }
 
       siteUrl = `https://${branchUrl}`;
-
     } else if (environment === "production") {
       siteUrl = "https://tredhost-theta.vercel.app";
-
     } else {
       return res.status(500).json({
         error: "Ambiente do servidor não identificado."
@@ -77,11 +76,11 @@ module.exports = async (req, res) => {
       });
     }
 
-    // E-mail de teste no Preview.
-    // E-mail real do cliente em Production.
+    // Comprador de teste no Preview.
+    // E-mail do próprio cliente em Production.
     const payerEmail =
       environment === "preview"
-        ? "test@testuser.com"
+        ? "test_user_3667886618686988106@testuser.com"
         : user.email;
 
     const mpResponse = await fetch(
