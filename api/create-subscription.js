@@ -12,13 +12,25 @@ module.exports = async (req, res) => {
     const mpToken = process.env.MP_ACCESS_TOKEN;
     const environment = process.env.VERCEL_ENV;
 
+    // Diagnóstico das variáveis
     if (!supabaseUrl || !supabaseKey || !mpToken) {
+      console.error("Diagnóstico de configuração:", {
+        supabaseUrl: Boolean(supabaseUrl),
+        supabaseKey: Boolean(supabaseKey),
+        mpToken: Boolean(mpToken)
+      });
+
       return res.status(500).json({
-        error: "Configuração do servidor incompleta"
+        error: "Configuração do servidor incompleta",
+        diagnostico: {
+          supabaseUrl: Boolean(supabaseUrl),
+          supabaseKey: Boolean(supabaseKey),
+          mpToken: Boolean(mpToken)
+        }
       });
     }
 
-    // Identifica se está no ambiente de teste ou produção
+    // Identifica o ambiente
     let siteUrl;
 
     if (environment === "preview") {
@@ -41,6 +53,7 @@ module.exports = async (req, res) => {
       });
     }
 
+    // Verifica o login
     const authorization = req.headers.authorization;
 
     if (!authorization || !authorization.startsWith("Bearer ")) {
@@ -49,7 +62,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Confirma a identidade do usuário no Supabase
     const userResponse = await fetch(
       `${supabaseUrl}/auth/v1/user`,
       {
@@ -74,7 +86,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Cria a assinatura mensal no Mercado Pago
+    // Cria a assinatura no Mercado Pago
     const mpResponse = await fetch(
       "https://api.mercadopago.com/preapproval",
       {
