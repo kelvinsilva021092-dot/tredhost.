@@ -577,13 +577,31 @@ footer {
   box-shadow:0 8px 30px rgba(126,34,206,.3);
 }
 
-.subscription-help {
+.kiwify-brand {
   position:relative;
-  margin:22px auto 0;
-  max-width:490px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  margin:18px auto 0;
+}
+.kiwify-brand img {
+  display:block;
+  width:112px;
+  max-width:45%;
+  height:auto;
+  padding:8px 12px;
+  border-radius:9px;
+  background:#fff;
+}
+.kiwify-brand span {
   color:#9e92ad;
-  font-size:12px;
-  line-height:1.7;
+  font-size:11px;
+}
+
+.subscribe-button {
+  background:linear-gradient(100deg,#8745e8,#692fc4);
+  box-shadow:0 8px 30px rgba(121,56,213,.28);
 }
 
 .subscription-status {
@@ -677,7 +695,7 @@ footer {
       </p>
       <div class="price">
         <span class="old">R$ 24,90</span>
-        R$ 14,90 <small>/ mês</small>
+        R$ 11,90 <small>/ mês</small>
       </div>
       <p class="price-note">Acesso à área exclusiva mediante assinatura ativa.</p>
     </div>
@@ -716,42 +734,27 @@ footer {
 <!-- NOVA TELA PARA QUEM NÃO TEM ASSINATURA ATIVA -->
 <section id="subscriptionPage" class="hidden">
   <div class="subscription-card">
-    <div class="lock-icon">🔒</div>
-
     <div class="tag">✦ Acesso exclusivo</div>
 
-    <h1>Seu acesso ainda <span>não está liberado.</span></h1>
-
-    <p class="subscription-description">
-      Sua conta foi reconhecida, mas você ainda não possui uma assinatura ativa.
-      Torne-se membro para desbloquear os conteúdos exclusivos do MEMBROStred
-      e acompanhar de perto cada projeto.
-    </p>
+    <h1>Acesso à página de membros <span>exclusivas.</span></h1>
 
     <div class="subscription-price">
       <span class="old-price">R$ 24,90</span>
-      <strong>R$ 14,90</strong>
+      <strong>R$ 11,90</strong>
       <small>/ mês</small>
-      <span class="discount">Sua assinatura mensal</span>
-    </div>
-
-    <div class="benefits">
-      <div class="benefit"><span>✦</span> Vídeos exclusivos</div>
-      <div class="benefit"><span>✦</span> Bastidores dos projetos</div>
-      <div class="benefit"><span>✦</span> Conteúdos especiais</div>
-      <div class="benefit"><span>✦</span> Novidades para membros</div>
     </div>
 
     <button id="subscribeButton" class="subscribe-button" onclick="startSubscription()">
-      QUERO ME TORNAR MEMBRO
+      ASSINAR AGORA
     </button>
 
-    <div id="subscriptionStatus" class="subscription-status" aria-live="polite"></div>
+    <div class="kiwify-brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Kiwify_logo_horizontal.svg"
+           alt="Kiwify">
+      <span>Pagamento seguro pela Kiwify.</span>
+    </div>
 
-    <p class="subscription-help">
-      Já realizou o pagamento? A confirmação pode levar alguns instantes.
-      Você também pode sair e entrar novamente para atualizar seu acesso.
-    </p>
+    <div id="subscriptionStatus" class="subscription-status" aria-live="polite"></div>
 
     <div class="subscription-actions">
       <button onclick="checkMySubscription()">Já sou membro — verificar acesso</button>
@@ -985,41 +988,10 @@ function showMemberDashboard(user) {
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
-/* INICIA A ASSINATURA NO MERCADO PAGO */
+/* REDIRECIONA PARA O CHECKOUT DA KIWIFY */
 
-async function startSubscription() {
-  if (!currentSession?.accessToken) {
-    showSubscriptionStatus("Sua sessão expirou. Entre novamente na sua conta.");
-    return;
-  }
-
-  const button = document.getElementById("subscribeButton");
-  button.disabled = true;
-  button.textContent = "AGUARDE...";
-
-  showSubscriptionStatus("Estamos preparando sua assinatura com segurança...");
-
-  try {
-    const response = await fetch("/api/create-subscription", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentSession.accessToken}`
-      }
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.init_point) {
-      throw new Error(result.error || "Não foi possível iniciar sua assinatura.");
-    }
-
-    window.location.href = result.init_point;
-  } catch (error) {
-    showSubscriptionStatus(error.message || "Erro ao iniciar assinatura. Tente novamente.");
-    button.disabled = false;
-    button.textContent = "QUERO ME TORNAR MEMBRO";
-  }
+function startSubscription() {
+  window.location.href = "https://pay.kiwify.com.br/z1cMK9E";
 }
 
 /* ATUALIZA A ASSINATURA DEPOIS DO PAGAMENTO */
